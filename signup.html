@@ -13,6 +13,11 @@
     :root {
       --bg: #0f172a;
       --bg-light: #111827;
+      --site-bg-1: #061225;
+      --site-bg-2: #0b1f3f;
+      --site-bg-3: #123a63;
+      --site-glow-a: rgba(46, 127, 255, 0.22);
+      --site-glow-b: rgba(16, 185, 255, 0.16);
       --primary: #3b82f6;
       --accent: #22c55e;
       --text: #e5e7eb;
@@ -27,7 +32,10 @@
     }
 
     body {
-      background: #000000;
+      background:
+        radial-gradient(900px 500px at 12% 10%, var(--site-glow-a), transparent 60%),
+        radial-gradient(800px 420px at 88% 85%, var(--site-glow-b), transparent 60%),
+        linear-gradient(145deg, var(--site-bg-1) 0%, var(--site-bg-2) 45%, var(--site-bg-3) 100%);
       color: var(--text);
       display: flex;
       align-items: flex-start;
@@ -39,17 +47,22 @@
       min-height: 100vh;
       touch-action: pan-y pinch-zoom;
       -webkit-overflow-scrolling: touch;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
     }
 
     .signup-container {
       width: 100%;
       max-width: 450px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+      background:
+        radial-gradient(160% 120% at 10% -8%, rgba(59, 130, 246, 0.2), transparent 55%),
+        linear-gradient(135deg, rgba(8, 16, 34, 0.84), rgba(10, 22, 48, 0.78));
       backdrop-filter: blur(20px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(148, 163, 184, 0.32);
       border-radius: 20px;
       padding: 40px 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 20px 48px rgba(2, 6, 23, 0.5), inset 0 1px 0 rgba(147, 197, 253, 0.14);
       animation: slideUp 0.6s ease;
       margin: 88px 12px 24px;
     }
@@ -196,7 +209,7 @@
     .signup-btn {
       width: 100%;
       padding: 14px;
-      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8 55%, #0ea5e9);
       border: none;
       border-radius: 10px;
       color: white;
@@ -215,7 +228,7 @@
       padding: 8px 14px;
       border-radius: 999px;
       border: 1px solid rgba(148, 163, 184, 0.38);
-      background: rgba(30, 41, 59, 0.78);
+      background: rgba(8, 17, 37, 0.8);
       color: #e2e8f0;
       font-size: 13px;
       font-weight: 600;
@@ -223,7 +236,7 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24);
+      box-shadow: 0 10px 22px rgba(2, 6, 23, 0.32);
     }
 
     .profile-preview-btn:hover {
@@ -437,12 +450,41 @@
         padding: 7px 12px;
       }
     }
+
+    /* Stitch rhythm tuning */
+    @media (max-width: 360px) {
+      .signup-container {
+        padding: 22px 12px;
+        margin-top: 70px;
+      }
+
+      .signup-header h1 {
+        font-size: 24px;
+      }
+
+      .form-row {
+        gap: 10px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .signup-container {
+        max-width: 500px;
+        padding: 44px 28px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .signup-container {
+        max-width: 540px;
+      }
+    }
   </style>
 </head>
 <body>
   <!-- Back to Home Link -->
   <div id="backHomeWrap" style="position: fixed; top: 14px; left: 12px; z-index: 1000;">
-    <a href="index.html" id="backHomeLink" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 5px; padding: 8px 14px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='rgba(255,255,255,0.7)';">
+    <a href="index.html" id="backHomeLink" style="color: #dbeafe; text-decoration: none; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: rgba(15,23,42,0.72); border-radius: 999px; border: 1px solid rgba(125,211,252,0.32); backdrop-filter: blur(10px); transition: all 0.3s;" onmouseover="this.style.background='rgba(30,41,59,0.88)'; this.style.color='#fff'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='rgba(15,23,42,0.72)'; this.style.color='#dbeafe'; this.style.transform='translateY(0)';">
       ← Back to Home
     </a>
   </div>
@@ -533,6 +575,28 @@
       <div class="form-group">
         <label for="college">College Name *</label>
         <input type="text" id="college" name="college" placeholder="Your College Name" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="mobileNo">Mobile No *</label>
+          <input type="tel" id="mobileNo" name="mobileNo" placeholder="9876543210" pattern="[0-9]{10}" required>
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender *</label>
+          <select id="gender" name="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="permanentAddress">Permanent Address *</label>
+        <input type="text" id="permanentAddress" name="permanentAddress" placeholder="House no, street, city, state" required>
       </div>
 
       <button type="submit" class="signup-btn">Create Account</button>
@@ -657,6 +721,9 @@
         'Semester': document.getElementById('semester').value || '-',
         'College ID No': document.getElementById('collegeIdNo').value.trim() || '-',
         'College': document.getElementById('college').value.trim() || '-',
+        'Mobile No': document.getElementById('mobileNo').value.trim() || '-',
+        'Gender': document.getElementById('gender').value || '-',
+        'Permanent Address': document.getElementById('permanentAddress').value.trim() || '-',
         'Password': document.getElementById('password').value ? '********' : '-'
       };
     }
@@ -757,6 +824,9 @@
       const semester = document.getElementById('semester').value;
       const collegeIdNo = document.getElementById('collegeIdNo').value.trim();
       const college = document.getElementById('college').value;
+      const mobileNo = document.getElementById('mobileNo').value.trim();
+      const gender = document.getElementById('gender').value;
+      const permanentAddress = document.getElementById('permanentAddress').value.trim();
 
       const errorMsg = document.getElementById('errorMsg');
       const successMsg = document.getElementById('successMsg');
@@ -776,17 +846,27 @@
         return;
       }
 
+      if (!/^\d{10}$/.test(mobileNo)) {
+        errorMsg.textContent = '⚠️ Mobile number must be exactly 10 digits.';
+        errorMsg.style.display = 'block';
+        successMsg.style.display = 'none';
+        return;
+      }
+
       // Create user object
       const user = {
         firstName,
         lastName,
         username,
         email,
-        password: btoa(password), // Basic encoding (not secure for production)
+        password,
         department,
         semester,
         collegeIdNo,
         college,
+        mobileNo,
+        gender,
+        permanentAddress,
         createdAt: new Date().toISOString(),
         id: 'user-' + Date.now()
       };
@@ -821,14 +901,17 @@
         department,
         semester,
         collegeIdNo,
-        college
+        college,
+        mobileNo,
+        gender,
+        permanentAddress
       }));
 
       // Keep latest credentials in local storage with explicit key names
       localStorage.setItem('latestUserCredentials', JSON.stringify({
         username,
         email,
-        password: btoa(password)
+        password
       }));
 
       // Save to Google Sheets (if configured)
@@ -856,7 +939,7 @@
       }
 
       // Create CSV content
-      const headers = ['ID', 'First Name', 'Last Name', 'Email', 'Department', 'Semester', 'College ID No', 'College', 'Created At'];
+      const headers = ['ID', 'First Name', 'Last Name', 'Email', 'Department', 'Semester', 'College ID No', 'College', 'Mobile No', 'Gender', 'Permanent Address', 'Created At'];
       const csvRows = [headers.join(',')];
 
       users.forEach(user => {
@@ -869,6 +952,9 @@
           user.semester,
           user.collegeIdNo || '',
           user.college,
+          user.mobileNo || '',
+          user.gender || '',
+          user.permanentAddress || '',
           user.createdAt
         ];
         csvRows.push(row.join(','));
@@ -1026,11 +1112,7 @@
           }, 250);
         });
 
-        if (this.os === 'iOS') {
-          document.addEventListener('gesturestart', (e) => {
-            e.preventDefault();
-          });
-        }
+        // Keep native iOS gestures enabled to avoid blocking scroll.
       }
     }
 

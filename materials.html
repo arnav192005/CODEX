@@ -13,6 +13,11 @@
     :root {
       --bg: #0f172a;
       --bg-light: #111827;
+      --site-bg-1: #061225;
+      --site-bg-2: #0b1f3f;
+      --site-bg-3: #123a63;
+      --site-glow-a: rgba(46, 127, 255, 0.22);
+      --site-glow-b: rgba(16, 185, 255, 0.16);
       --primary: #3b82f6;
       --primary-soft: rgba(59, 130, 246, 0.15);
       --accent: #22c55e;
@@ -28,6 +33,11 @@
     :root[data-theme="light"] {
       --bg: #f8fafc;
       --bg-light: #f1f5f9;
+      --site-bg-1: #eaf3ff;
+      --site-bg-2: #dbeafe;
+      --site-bg-3: #c7defd;
+      --site-glow-a: rgba(14, 165, 233, 0.18);
+      --site-glow-b: rgba(99, 102, 241, 0.12);
       --primary: #0ea5e9;
       --primary-soft: rgba(14, 165, 233, 0.15);
       --accent: #10b981;
@@ -46,7 +56,10 @@
     }
 
     body {
-      background: #000000;
+      background:
+        radial-gradient(900px 500px at 12% 10%, var(--site-glow-a), transparent 60%),
+        radial-gradient(800px 420px at 88% 85%, var(--site-glow-b), transparent 60%),
+        linear-gradient(145deg, var(--site-bg-1) 0%, var(--site-bg-2) 45%, var(--site-bg-3) 100%);
       color: var(--text);
       position: relative;
       overflow-x: hidden;
@@ -60,6 +73,9 @@
       padding: 0;
       touch-action: pan-y pinch-zoom;
       -webkit-overflow-scrolling: touch;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
     }
     
     body.custom-bg {
@@ -68,8 +84,12 @@
     
     @media (max-width: 767px) {
       body {
-        background: #0f172a;
+        background:
+          radial-gradient(700px 380px at 10% 8%, var(--site-glow-a), transparent 58%),
+          radial-gradient(620px 320px at 88% 90%, var(--site-glow-b), transparent 58%),
+          linear-gradient(145deg, var(--site-bg-1) 0%, var(--site-bg-2) 48%, var(--site-bg-3) 100%);
         animation: none;
+        background-attachment: scroll;
       }
     }
 
@@ -251,6 +271,46 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+
+    /* Stitch rhythm tuning */
+    @media (max-width: 360px) {
+      .page {
+        padding: 12px 6px 34px;
+      }
+
+      header {
+        padding: 7px 8px;
+      }
+
+      .brand-text span:first-child {
+        font-size: 10px;
+      }
+
+      .header-right-section {
+        gap: 4px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 24px 20px 48px;
+      }
+
+      header {
+        padding: 12px 18px;
+      }
+
+      .website-stats-toggle {
+        width: 54px;
+        height: 54px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .page {
+        max-width: 1280px;
+      }
+    }
       justify-content: center;
       gap: 16px;
       padding: 12px 18px;
@@ -525,7 +585,7 @@
     }
 
     .nav-links .profile-btn-nav {
-      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8 55%, #0ea5e9);
       color: white;
       padding: 9px 18px;
       border-radius: 999px;
@@ -533,7 +593,7 @@
       font-weight: 700;
       transition: all 0.25s ease;
       border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 8px 26px rgba(124, 58, 237, 0.4);
+      box-shadow: 0 10px 26px rgba(2, 132, 199, 0.34);
     }
 
     .nav-links .profile-btn-nav:hover {
@@ -564,8 +624,8 @@
       width: 30px;
       height: 30px;
       border-radius: 50%;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      background: rgba(96, 165, 250, 0.15);
+      border: 1px solid rgba(148, 163, 184, 0.38);
+      background: rgba(8, 17, 37, 0.75);
       cursor: pointer;
       transition: all 0.3s ease;
       display: inline-flex;
@@ -597,7 +657,7 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8 55%, #0ea5e9);
       color: white;
       display: inline-flex;
       align-items: center;
@@ -630,13 +690,13 @@
       align-items: center;
       gap: 8px;
       padding: 8px 16px;
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.1));
-      border: 1px solid rgba(34, 197, 94, 0.3);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(14, 165, 233, 0.12));
+      border: 1px solid rgba(96, 165, 250, 0.35);
       border-radius: 999px;
-      color: #4ade80;
+      color: #93c5fd;
       font-size: 13px;
       font-weight: 600;
-      box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.24);
     }
     
     .current-page-indicator::before {
@@ -674,10 +734,12 @@
 
     footer {
       margin-top: 32px;
-      padding-top: 16px;
+      padding: 14px 16px;
       font-size: 11px;
       color: var(--muted);
-      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 14px;
+      background: rgba(8, 17, 37, 0.62);
       display: flex;
       justify-content: space-between;
       gap: 10px;
@@ -904,6 +966,259 @@
       box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
     }
 
+    .profile-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      padding: 16px;
+    }
+
+    .profile-modal.show {
+      display: flex;
+      animation: fadeIn 0.24s ease;
+    }
+
+    .profile-modal-card {
+      width: 100%;
+      max-width: 560px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.4);
+    }
+
+    .profile-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .profile-modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #bfdbfe;
+    }
+
+    .profile-modal-close {
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: rgba(239, 68, 68, 0.12);
+      color: #fda4af;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .profile-avatar-wrap {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: rgba(148, 163, 184, 0.08);
+      border-radius: 12px;
+    }
+
+    .profile-avatar-preview {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(96, 165, 250, 0.42);
+      background: rgba(15, 23, 42, 0.8);
+      flex-shrink: 0;
+    }
+
+    .profile-avatar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .profile-avatar-btn {
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      background: rgba(59, 130, 246, 0.14);
+      color: #bfdbfe;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .profile-avatar-btn.remove {
+      border-color: rgba(239, 68, 68, 0.44);
+      background: rgba(239, 68, 68, 0.14);
+      color: #fecaca;
+    }
+
+    .profile-crop-panel {
+      display: none;
+      margin-bottom: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(15, 23, 42, 0.66);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .profile-crop-panel.show {
+      display: block;
+    }
+
+    .profile-crop-title {
+      font-size: 12px;
+      color: #93c5fd;
+      margin-bottom: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .profile-crop-canvas-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .profile-crop-canvas {
+      width: 220px;
+      height: 220px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: radial-gradient(circle at 50% 50%, rgba(148, 163, 184, 0.14), rgba(15, 23, 42, 0.9));
+    }
+
+    .profile-crop-row {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .profile-crop-row label {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .profile-crop-row input[type="range"] {
+      width: 100%;
+      accent-color: #3b82f6;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .profile-item {
+      background: rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .profile-item.full {
+      grid-column: 1 / -1;
+    }
+
+    .profile-item-label {
+      display: block;
+      color: #94a3b8;
+      font-size: 11px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .profile-item-value {
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .profile-item-input {
+      width: 100%;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.72);
+      border-radius: 8px;
+      color: #e2e8f0;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .profile-item-input[readonly] {
+      opacity: 0.85;
+      cursor: not-allowed;
+    }
+
+    .profile-modal-actions {
+      margin-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .profile-edit-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .profile-action-btn {
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid rgba(96, 165, 250, 0.45);
+      background: rgba(59, 130, 246, 0.15);
+      color: #bfdbfe;
+    }
+
+    .profile-action-btn.save {
+      border-color: rgba(34, 197, 94, 0.45);
+      background: rgba(34, 197, 94, 0.16);
+      color: #bbf7d0;
+    }
+
+    .profile-action-btn.cancel {
+      border-color: rgba(148, 163, 184, 0.4);
+      background: rgba(148, 163, 184, 0.14);
+      color: #e2e8f0;
+    }
+
+    .profile-logout-btn {
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      background: rgba(239, 68, 68, 0.15);
+      color: #fecaca;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
     @media (max-width: 768px) {
       .profile-card-mini {
         flex-direction: column;
@@ -912,6 +1227,15 @@
 
       .view-profile-btn {
         width: 100%;
+      }
+
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-avatar-wrap {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
 
@@ -1500,143 +1824,11 @@
       color: var(--muted);
     }
 
-    /* Search Section */
-    .search-section {
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      animation: fadeInUp 0.8s ease-out 0.4s both;
-      padding: 0;
-      flex-direction: column;
-      gap: 10px;
-    }
-    
-    @media (max-width: 767px) {
-      .search-section {
-        margin-bottom: 14px;
-        gap: 10px;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .search-section {
-        margin-bottom: 10px;
-        gap: 8px;
-      }
-    }
-
-    .search-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(15, 23, 42, 0.8);
-      border-radius: 25px;
-      padding: 8px 16px;
-      border: 2px solid transparent;
-      background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), 
-                        linear-gradient(135deg, #3b82f6, #22c55e, #a78bfa);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 30px rgba(59, 130, 246, 0.2);
-      max-width: 100%;
-      width: 100%;
-      transition: all 0.3s ease;
-      animation: borderFlow 3s linear infinite;
-    }
-    
-    @media (max-width: 767px) {
-      .search-container {
-        padding: 6px 12px;
-        gap: 8px;
-      }
-    }
-
-    .search-container:focus-within {
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 50px rgba(59, 130, 246, 0.5);
-      transform: translateY(-2px);
-    }
-
-    @keyframes borderFlow {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    .search-input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 14px;
-      outline: none;
-      padding: 8px 0;
-    }
-    
-    @media (max-width: 767px) {
-      .search-input {
-        font-size: 12px;
-        padding: 6px 0;
-      }
-    }
-
-    .search-input::placeholder {
-      color: var(--muted);
-    }
-
-    .search-btn {
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: none;
-      background: linear-gradient(135deg, #22c55e, #10b981, #059669);
-      background-size: 200% 200%;
-      color: #fff;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
-      animation: buttonGradient 3s ease infinite;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    @media (max-width: 767px) {
-      .search-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-        border-radius: 16px;
-      }
-    }
-
-    .search-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .search-btn:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .search-btn:hover {
-      transform: scale(1.05) translateY(-2px);
-      box-shadow: 0 0 30px rgba(34, 197, 94, 0.6), 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .search-btn:active {
-      transform: scale(0.98) translateY(0);
-    }
-
-    @keyframes buttonGradient {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
+    .search-highlight {
+      background: rgba(250, 204, 21, 0.3);
+      color: #fef3c7;
+      padding: 0 2px;
+      border-radius: 4px;
     }
 
     .filter-container {
@@ -2295,16 +2487,6 @@
         flex-direction: column;
         align-items: flex-start;
       }
-      .search-container {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .search-input {
-        width: 100%;
-      }
-      .search-btn {
-        width: 100%;
-      }
     }
 
 
@@ -2346,8 +2528,61 @@
           <h3 id="profileNameMini">Guest User</h3>
           <p id="profileInfoMini">Not logged in</p>
         </div>
+        <button type="button" id="viewProfileBtn" class="view-profile-btn">View Profile</button>
       </div>
     </section>
+
+    <div id="profileModal" class="profile-modal" role="dialog" aria-modal="true" aria-label="Profile details">
+      <div class="profile-modal-card">
+        <div class="profile-modal-header">
+          <div class="profile-modal-title">Your Profile</div>
+          <button type="button" id="profileModalClose" class="profile-modal-close">X</button>
+        </div>
+
+        <div class="profile-avatar-wrap">
+          <img id="profileAvatarPreview" class="profile-avatar-preview" alt="Profile photo" src="" />
+          <div class="profile-avatar-actions">
+            <button type="button" id="profilePhotoUploadBtn" class="profile-avatar-btn">Upload Photo</button>
+            <button type="button" id="profilePhotoEditBtn" class="profile-avatar-btn">Edit Crop</button>
+            <button type="button" id="profilePhotoRemoveBtn" class="profile-avatar-btn remove">Remove</button>
+            <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;" />
+          </div>
+        </div>
+
+        <div id="profileCropPanel" class="profile-crop-panel" aria-live="polite">
+          <div class="profile-crop-title">Crop Photo</div>
+          <div class="profile-crop-canvas-wrap">
+            <canvas id="profileCropCanvas" class="profile-crop-canvas" width="220" height="220"></canvas>
+          </div>
+          <div class="profile-crop-row">
+            <label for="profileCropZoom">Zoom</label>
+            <input type="range" id="profileCropZoom" min="1" max="3" step="0.01" value="1.3" />
+          </div>
+          <div class="profile-crop-row">
+            <label for="profileCropX">Left/Right</label>
+            <input type="range" id="profileCropX" min="-100" max="100" step="1" value="0" />
+          </div>
+          <div class="profile-crop-row">
+            <label for="profileCropY">Up/Down</label>
+            <input type="range" id="profileCropY" min="-100" max="100" step="1" value="0" />
+          </div>
+          <div class="profile-avatar-actions" style="margin-top:10px;">
+            <button type="button" id="profileCropApplyBtn" class="profile-avatar-btn">Save Crop</button>
+            <button type="button" id="profileCropCancelBtn" class="profile-avatar-btn remove">Cancel</button>
+          </div>
+        </div>
+
+        <div id="profileGrid" class="profile-grid"></div>
+        <div class="profile-modal-actions">
+          <div class="profile-edit-actions">
+            <button type="button" id="profileEditBtn" class="profile-action-btn">Edit Profile</button>
+            <button type="button" id="profileSaveBtn" class="profile-action-btn save" style="display:none;">Save</button>
+            <button type="button" id="profileCancelBtn" class="profile-action-btn cancel" style="display:none;">Cancel</button>
+          </div>
+          <button type="button" id="profileLogoutBtn" class="profile-logout-btn">Logout</button>
+        </div>
+      </div>
+    </div>
 
     
 
@@ -2373,6 +2608,14 @@
         <select id="filterSubject" class="filter-select" aria-label="Filter by subject">
           <option value="">All Subjects</option>
         </select>
+        <select id="sortBy" class="filter-select" aria-label="Sort materials">
+          <option value="relevance">Sort: Relevance</option>
+          <option value="title-asc">Title: A to Z</option>
+          <option value="title-desc">Title: Z to A</option>
+          <option value="semester-asc">Semester: Low to High</option>
+          <option value="semester-desc">Semester: High to Low</option>
+        </select>
+        <button id="clearFiltersBtn" class="clear-btn" type="button">Clear All Filters</button>
       </div>
 
       <!-- Link back to search -->
@@ -2398,6 +2641,7 @@
         search and try again.
       </div>
     </section>
+
   </div>
 
   <script>
@@ -2764,30 +3008,192 @@
     const branchFilter = document.getElementById('filterBranch');
     const semesterFilter = document.getElementById('filterSemester');
     const subjectFilter = document.getElementById('filterSubject');
-    // Search elements now removed - searching is done from index.html
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const sortBy = document.getElementById('sortBy');
+    const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+    const searchResultsInfo = document.getElementById('searchResultsInfo');
+    const locationBlocksContainer = document.getElementById('locationBlocksContainer');
+
+    const materialMetaMap = new WeakMap();
+    const materialSearchIndex = materials.map((material) => {
+      const titleLower = String(material.title || '').toLowerCase();
+      const subjectLower = String(material.subject || '').toLowerCase();
+      const codeLower = String(material.code || '').toLowerCase();
+      const descriptionLower = String(material.description || '').toLowerCase();
+
+      const meta = {
+        titleLower,
+        subjectLower,
+        codeLower,
+        descriptionLower,
+        searchBlob: `${titleLower} ${subjectLower} ${codeLower} ${descriptionLower}`.trim(),
+        semesterNum: Number(material.semester || 0)
+      };
+
+      materialMetaMap.set(material, meta);
+      return { material, meta };
+    });
+
+    const FILTER_CACHE_TTL_MS = 3 * 60 * 1000;
+    const FILTER_CACHE_MAX_ENTRIES = 120;
+    const FILTER_CACHE_SWEEP_INTERVAL_MS = 60 * 1000;
+    const filterResultCache = new Map();
+
+    function buildFilterCacheKey(query = '', branch = '', semester = '', type = '', selectedSubject = '', sortMode = 'relevance') {
+      return [
+        String(query || '').trim().toLowerCase(),
+        String(branch || ''),
+        String(semester || ''),
+        String(type || ''),
+        String(selectedSubject || ''),
+        String(sortMode || 'relevance')
+      ].join('|');
+    }
+
+    function pruneFilterCache(now = Date.now()) {
+      for (const [key, entry] of filterResultCache.entries()) {
+        if (now - entry.timestamp > FILTER_CACHE_TTL_MS) {
+          filterResultCache.delete(key);
+        }
+      }
+
+      if (filterResultCache.size <= FILTER_CACHE_MAX_ENTRIES) {
+        return;
+      }
+
+      const entriesByAge = [...filterResultCache.entries()]
+        .sort((a, b) => a[1].timestamp - b[1].timestamp);
+
+      const toRemoveCount = filterResultCache.size - FILTER_CACHE_MAX_ENTRIES;
+      for (let i = 0; i < toRemoveCount; i++) {
+        filterResultCache.delete(entriesByAge[i][0]);
+      }
+    }
+
+    function getCachedFilterResult(cacheKey) {
+      const entry = filterResultCache.get(cacheKey);
+      if (!entry) {
+        return null;
+      }
+
+      if (Date.now() - entry.timestamp > FILTER_CACHE_TTL_MS) {
+        filterResultCache.delete(cacheKey);
+        return null;
+      }
+
+      return entry.result;
+    }
+
+    function setCachedFilterResult(cacheKey, result) {
+      filterResultCache.set(cacheKey, {
+        timestamp: Date.now(),
+        result
+      });
+      pruneFilterCache();
+    }
+
+    const filterCacheSweepTimer = setInterval(() => {
+      pruneFilterCache();
+    }, FILTER_CACHE_SWEEP_INTERVAL_MS);
 
     let activeSearchQuery = '';
 
-    // Render materials with performance optimizations
-    function renderMaterials(filteredMaterials = materials) {
-      const materialsGrid = document.getElementById('materialsGrid');
-      const emptyState = document.getElementById('emptyState');
-      const resultsCount = document.getElementById('resultsCount');
+    function getMaterialMeta(material) {
+      return materialMetaMap.get(material) || {
+        titleLower: '',
+        subjectLower: '',
+        codeLower: '',
+        descriptionLower: '',
+        searchBlob: '',
+        semesterNum: 0
+      };
+    }
 
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function escapeRegExp(value) {
+      return String(value || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function highlightText(value, query) {
+      const source = String(value || '');
+      const trimmedQuery = String(query || '').trim();
+      if (!trimmedQuery) {
+        return escapeHtml(source);
+      }
+
+      const pattern = new RegExp(`(${escapeRegExp(trimmedQuery)})`, 'ig');
+      const escaped = escapeHtml(source);
+      return escaped.replace(pattern, '<mark class="search-highlight">$1</mark>');
+    }
+
+    function sortMaterials(materialList, sortMode = 'relevance', query = '') {
+      const cloned = [...materialList];
+
+      if (sortMode === 'title-asc') {
+        return cloned.sort((a, b) => getMaterialMeta(a).titleLower.localeCompare(getMaterialMeta(b).titleLower));
+      }
+
+      if (sortMode === 'title-desc') {
+        return cloned.sort((a, b) => getMaterialMeta(b).titleLower.localeCompare(getMaterialMeta(a).titleLower));
+      }
+
+      if (sortMode === 'semester-asc') {
+        return cloned.sort((a, b) => getMaterialMeta(a).semesterNum - getMaterialMeta(b).semesterNum);
+      }
+
+      if (sortMode === 'semester-desc') {
+        return cloned.sort((a, b) => getMaterialMeta(b).semesterNum - getMaterialMeta(a).semesterNum);
+      }
+
+      const queryLower = String(query || '').toLowerCase().trim();
+      if (!queryLower) {
+        return cloned;
+      }
+
+      const score = (material) => {
+        const meta = getMaterialMeta(material);
+
+        let rank = 0;
+        if (meta.titleLower.startsWith(queryLower)) rank += 100;
+        if (meta.titleLower.includes(queryLower)) rank += 40;
+        if (meta.subjectLower.includes(queryLower)) rank += 30;
+        if (meta.codeLower.includes(queryLower)) rank += 20;
+        if (meta.descriptionLower.includes(queryLower)) rank += 10;
+        return rank;
+      };
+
+      return cloned.sort((a, b) => score(b) - score(a));
+    }
+
+    // Render materials with performance optimizations
+    function renderMaterials(filteredMaterials = materials, query = '') {
       materialsGrid.innerHTML = '';
 
       if (filteredMaterials.length === 0) {
         emptyState.style.display = 'block';
         resultsCount.textContent = 'No materials found';
-        document.getElementById('searchResultsInfo').classList.remove('active');
+        searchResultsInfo.classList.remove('active');
         return;
       }
 
       emptyState.style.display = 'none';
-      resultsCount.textContent = `Showing ${filteredMaterials.length} material${filteredMaterials.length === 1 ? '' : 's'}`;
+      const suffix = query ? ` for "${query}"` : '';
+      resultsCount.textContent = `Showing ${filteredMaterials.length} material${filteredMaterials.length === 1 ? '' : 's'}${suffix}`;
 
-      // Hide location information since we don't have search UI
-      document.getElementById('searchResultsInfo').classList.remove('active');
+      if (query) {
+        displayLocationInfo(filteredMaterials);
+      } else {
+        searchResultsInfo.classList.remove('active');
+      }
 
       // Use DocumentFragment for better performance
       const fragment = document.createDocumentFragment();
@@ -2799,19 +3205,19 @@
 
         card.innerHTML = `
           <div class="material-header">
-            <div class="material-title">${material.title}</div>
+            <div class="material-title">${highlightText(material.title, query)}</div>
             <div class="material-badges">
-              <span class="material-badge branch">${material.branch}</span>
-              <span class="material-badge semester">${material.semester}</span>
-              <span class="material-badge type">${material.type}</span>
+              <span class="material-badge branch">${escapeHtml(material.branch)}</span>
+              <span class="material-badge semester">${escapeHtml(material.semester)}</span>
+              <span class="material-badge type">${escapeHtml(material.type)}</span>
             </div>
           </div>
-          <div class="material-description">${material.description}</div>
+          <div class="material-description">${highlightText(material.description, query)}</div>
           <div class="material-footer">
-            <span class="material-code">${material.code}</span>
+            <span class="material-code">${highlightText(material.code, query)}</span>
             <span class="material-link">Open</span>
           </div>
-          ${material.location ? `<div class="material-location">${material.location}</div>` : ''}
+          ${material.location ? `<div class="material-location">${highlightText(material.location, query)}</div>` : ''}
         `;
 
         fragment.appendChild(card);
@@ -2822,9 +3228,6 @@
 
     // AI-based location display function
     function displayLocationInfo(materials) {
-      const searchResultsInfo = document.getElementById('searchResultsInfo');
-      const locationBlocksContainer = document.getElementById('locationBlocksContainer');
-      
       // Group materials by block
       const blockMap = {};
       
@@ -2860,8 +3263,8 @@
     }
 
     function populateFilterOptions() {
-      const uniqueBranches = [...new Set(materials.map(material => material.branch).filter(Boolean))].sort();
-      const uniqueSemesters = [...new Set(materials.map(material => material.semester).filter(Boolean))]
+      const uniqueBranches = [...new Set(materialSearchIndex.map(entry => entry.material.branch).filter(Boolean))].sort();
+      const uniqueSemesters = [...new Set(materialSearchIndex.map(entry => entry.material.semester).filter(Boolean))]
         .sort((a, b) => Number(a) - Number(b));
 
       uniqueBranches.forEach(branch => {
@@ -2885,7 +3288,8 @@
       const previousSubject = subjectFilter.value;
 
       const subjects = [...new Set(
-        materials
+        materialSearchIndex
+          .map(entry => entry.material)
           .filter(material => !selectedBranch || material.branch === selectedBranch)
           .filter(material => !selectedSemester || material.semester === selectedSemester)
           .map(material => material.subject)
@@ -2907,7 +3311,7 @@
     }
 
     function applyCurrentFilters() {
-      filterMaterials(activeSearchQuery, branchFilter.value, semesterFilter.value, '', subjectFilter.value);
+      filterMaterials(activeSearchQuery, branchFilter.value, semesterFilter.value, '', subjectFilter.value, sortBy.value);
     }
 
     // Load and display profile info if available
@@ -2923,19 +3327,15 @@
         // Show profile section
         profileSection.style.display = 'block';
         
-        // Update avatar
+        // Update avatar with image (if available) and fallback initial.
         const avatar = document.getElementById('profileAvatarMini');
-        if (profileData.fullName) {
-          avatar.textContent = profileData.fullName.charAt(0).toUpperCase();
-        }
-        
-        // Load profile image if exists
-        const savedImage = localStorage.getItem('profileImage');
+        const fallbackInitial = (profileData.fullName || profileData.email || '?').charAt(0).toUpperCase();
+        const savedImage = localStorage.getItem('profileImage') || profileData.profileImage || '';
+
         if (savedImage) {
-          const imgElement = document.createElement('img');
-          imgElement.src = savedImage;
-          avatar.appendChild(imgElement);
-          avatar.textContent = ''; // Clear text when image is shown
+          avatar.innerHTML = `<img src="${savedImage}" alt="Profile photo" />`;
+        } else {
+          avatar.textContent = fallbackInitial;
         }
         
         // Update name
@@ -2958,6 +3358,413 @@
       }
     }
 
+    const viewProfileBtn = document.getElementById('viewProfileBtn');
+    const profileModal = document.getElementById('profileModal');
+    const profileModalClose = document.getElementById('profileModalClose');
+    const profileGrid = document.getElementById('profileGrid');
+    const profileEditBtn = document.getElementById('profileEditBtn');
+    const profileSaveBtn = document.getElementById('profileSaveBtn');
+    const profileCancelBtn = document.getElementById('profileCancelBtn');
+    const profileLogoutBtn = document.getElementById('profileLogoutBtn');
+    const profileAvatarPreview = document.getElementById('profileAvatarPreview');
+    const profilePhotoUploadBtn = document.getElementById('profilePhotoUploadBtn');
+    const profilePhotoEditBtn = document.getElementById('profilePhotoEditBtn');
+    const profilePhotoRemoveBtn = document.getElementById('profilePhotoRemoveBtn');
+    const profilePhotoInput = document.getElementById('profilePhotoInput');
+    const profileCropPanel = document.getElementById('profileCropPanel');
+    const profileCropCanvas = document.getElementById('profileCropCanvas');
+    const profileCropZoom = document.getElementById('profileCropZoom');
+    const profileCropX = document.getElementById('profileCropX');
+    const profileCropY = document.getElementById('profileCropY');
+    const profileCropApplyBtn = document.getElementById('profileCropApplyBtn');
+    const profileCropCancelBtn = document.getElementById('profileCropCancelBtn');
+
+    let profileEditMode = false;
+    let profileEditSnapshot = null;
+    let profileCropImage = null;
+
+    function normalizeLower(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function escapeAttr(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function getProfileData() {
+      const studentProfile = JSON.parse(localStorage.getItem('studentProfile') || '{}');
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const baseEmail = normalizeLower(studentProfile.email || currentUser.email || '');
+      const matchedUser = users.find((u) => normalizeLower(u.email) === baseEmail) || {};
+
+      return {
+        'Full Name': studentProfile.fullName || currentUser.fullName || `${matchedUser.firstName || ''} ${matchedUser.lastName || ''}`.trim() || '-',
+        'Username': studentProfile.username || currentUser.username || matchedUser.username || '-',
+        'Email': studentProfile.email || currentUser.email || matchedUser.email || '-',
+        'Department': studentProfile.department || currentUser.department || matchedUser.department || '-',
+        'Semester': studentProfile.semester || currentUser.semester || matchedUser.semester || '-',
+        'College ID No': studentProfile.collegeIdNo || matchedUser.collegeIdNo || '-',
+        'College': studentProfile.college || matchedUser.college || '-',
+        'Mobile No': studentProfile.mobileNo || currentUser.mobileNo || matchedUser.mobileNo || '-',
+        'Gender': studentProfile.gender || currentUser.gender || matchedUser.gender || '-',
+        'Permanent Address': studentProfile.permanentAddress || matchedUser.permanentAddress || '-'
+      };
+    }
+
+    function getEditableProfileModel() {
+      const data = getProfileData();
+      return {
+        fullName: data['Full Name'] === '-' ? '' : String(data['Full Name'] || ''),
+        username: data['Username'] === '-' ? '' : String(data['Username'] || ''),
+        email: data['Email'] === '-' ? '' : String(data['Email'] || ''),
+        department: data['Department'] === '-' ? '' : String(data['Department'] || ''),
+        semester: data['Semester'] === '-' ? '' : String(data['Semester'] || ''),
+        collegeIdNo: data['College ID No'] === '-' ? '' : String(data['College ID No'] || ''),
+        college: data['College'] === '-' ? '' : String(data['College'] || ''),
+        mobileNo: data['Mobile No'] === '-' ? '' : String(data['Mobile No'] || ''),
+        gender: data['Gender'] === '-' ? '' : String(data['Gender'] || ''),
+        permanentAddress: data['Permanent Address'] === '-' ? '' : String(data['Permanent Address'] || '')
+      };
+    }
+
+    function setProfileEditButtonsState(isEditing) {
+      profileEditMode = isEditing;
+      if (profileEditBtn) profileEditBtn.style.display = isEditing ? 'none' : '';
+      if (profileSaveBtn) profileSaveBtn.style.display = isEditing ? '' : 'none';
+      if (profileCancelBtn) profileCancelBtn.style.display = isEditing ? '' : 'none';
+    }
+
+    function getDefaultAvatarDataUrl() {
+      const data = getProfileData();
+      const seed = String(data['Full Name'] || data['Username'] || 'U').trim();
+      const initial = (seed && seed[0] ? seed[0] : 'U').toUpperCase();
+      return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"><rect width="240" height="240" fill="%231e293b"/><text x="50%" y="53%" dominant-baseline="middle" text-anchor="middle" font-size="96" font-family="Segoe UI, Arial, sans-serif" fill="%2394a3b8">${initial}</text></svg>`;
+    }
+
+    function setProfileAvatarPreview(imageUrl) {
+      if (!profileAvatarPreview) return;
+      profileAvatarPreview.src = imageUrl || getDefaultAvatarDataUrl();
+    }
+
+    function loadSavedProfilePhoto() {
+      setProfileAvatarPreview(localStorage.getItem('profileImage'));
+    }
+
+    function hideProfileCropPanel() {
+      if (profileCropPanel) profileCropPanel.classList.remove('show');
+    }
+
+    function showProfileCropPanel() {
+      if (profileCropPanel) profileCropPanel.classList.add('show');
+    }
+
+    function renderProfileCropPreview() {
+      if (!profileCropCanvas || !profileCropImage) return;
+      const ctx = profileCropCanvas.getContext('2d');
+      const size = profileCropCanvas.width;
+      ctx.clearRect(0, 0, size, size);
+
+      const zoom = Number(profileCropZoom.value || 1.3);
+      const xOffset = Number(profileCropX.value || 0);
+      const yOffset = Number(profileCropY.value || 0);
+      const baseScale = Math.max(size / profileCropImage.width, size / profileCropImage.height);
+      const drawWidth = profileCropImage.width * baseScale * zoom;
+      const drawHeight = profileCropImage.height * baseScale * zoom;
+      const drawX = (size - drawWidth) / 2 + xOffset;
+      const drawY = (size - drawHeight) / 2 + yOffset;
+      ctx.drawImage(profileCropImage, drawX, drawY, drawWidth, drawHeight);
+    }
+
+    function openCropEditorFromSource(imageSrc) {
+      if (!imageSrc) {
+        alert('Please upload a photo first.');
+        return;
+      }
+      const image = new Image();
+      image.onload = () => {
+        profileCropImage = image;
+        profileCropZoom.value = '1.3';
+        profileCropX.value = '0';
+        profileCropY.value = '0';
+        showProfileCropPanel();
+        renderProfileCropPreview();
+      };
+      image.onerror = () => {
+        alert('Could not load image for cropping. Please try another photo.');
+      };
+      image.src = imageSrc;
+    }
+
+    function applyCroppedProfilePhoto() {
+      if (!profileCropCanvas) return;
+      const croppedDataUrl = profileCropCanvas.toDataURL('image/png', 0.95);
+      localStorage.setItem('profileImage', croppedDataUrl);
+      setProfileAvatarPreview(croppedDataUrl);
+      hideProfileCropPanel();
+      loadProfileInfo();
+    }
+
+    function renderProfileDetails() {
+      const data = getProfileData();
+
+      if (!profileEditMode) {
+        profileGrid.innerHTML = Object.entries(data).map(([label, value]) => {
+          const fullClass = (label === 'Email' || label === 'College' || label === 'Permanent Address') ? 'full' : '';
+          return `
+            <div class="profile-item ${fullClass}">
+              <span class="profile-item-label">${label}</span>
+              <span class="profile-item-value">${value}</span>
+            </div>
+          `;
+        }).join('');
+      } else {
+        const model = profileEditSnapshot || getEditableProfileModel();
+        profileGrid.innerHTML = `
+          <div class="profile-item">
+            <span class="profile-item-label">Full Name</span>
+            <input id="profileFieldFullName" class="profile-item-input" type="text" value="${escapeAttr(model.fullName)}" />
+          </div>
+          <div class="profile-item">
+            <span class="profile-item-label">Username</span>
+            <input id="profileFieldUsername" class="profile-item-input" type="text" value="${escapeAttr(model.username)}" />
+          </div>
+          <div class="profile-item full">
+            <span class="profile-item-label">Email</span>
+            <input id="profileFieldEmail" class="profile-item-input" type="text" value="${escapeAttr(model.email)}" readonly />
+          </div>
+          <div class="profile-item">
+            <span class="profile-item-label">Department</span>
+            <input id="profileFieldDepartment" class="profile-item-input" type="text" value="${escapeAttr(model.department)}" />
+          </div>
+          <div class="profile-item">
+            <span class="profile-item-label">Semester</span>
+            <input id="profileFieldSemester" class="profile-item-input" type="text" value="${escapeAttr(model.semester)}" />
+          </div>
+          <div class="profile-item">
+            <span class="profile-item-label">College ID No</span>
+            <input id="profileFieldCollegeIdNo" class="profile-item-input" type="text" value="${escapeAttr(model.collegeIdNo)}" />
+          </div>
+          <div class="profile-item full">
+            <span class="profile-item-label">College</span>
+            <input id="profileFieldCollege" class="profile-item-input" type="text" value="${escapeAttr(model.college)}" />
+          </div>
+          <div class="profile-item">
+            <span class="profile-item-label">Mobile No</span>
+            <input id="profileFieldMobileNo" class="profile-item-input" type="tel" value="${escapeAttr(model.mobileNo)}" />
+          </div>
+          <div class="profile-item">
+            <span class="profile-item-label">Gender</span>
+            <input id="profileFieldGender" class="profile-item-input" type="text" value="${escapeAttr(model.gender)}" />
+          </div>
+          <div class="profile-item full">
+            <span class="profile-item-label">Permanent Address</span>
+            <input id="profileFieldPermanentAddress" class="profile-item-input" type="text" value="${escapeAttr(model.permanentAddress)}" />
+          </div>
+        `;
+      }
+
+      setProfileEditButtonsState(profileEditMode);
+      loadSavedProfilePhoto();
+      hideProfileCropPanel();
+    }
+
+    function openProfileModal() {
+      renderProfileDetails();
+      profileModal.classList.add('show');
+    }
+
+    function closeProfileModal() {
+      profileEditSnapshot = null;
+      setProfileEditButtonsState(false);
+      hideProfileCropPanel();
+      profileModal.classList.remove('show');
+    }
+
+    if (viewProfileBtn) {
+      viewProfileBtn.addEventListener('click', openProfileModal);
+    }
+
+    if (profileModalClose) {
+      profileModalClose.addEventListener('click', closeProfileModal);
+    }
+
+    if (profileModal) {
+      profileModal.addEventListener('click', (event) => {
+        if (event.target === profileModal) {
+          closeProfileModal();
+        }
+      });
+    }
+
+    if (profileEditBtn) {
+      profileEditBtn.addEventListener('click', () => {
+        profileEditSnapshot = getEditableProfileModel();
+        setProfileEditButtonsState(true);
+        renderProfileDetails();
+      });
+    }
+
+    if (profileCancelBtn) {
+      profileCancelBtn.addEventListener('click', () => {
+        profileEditSnapshot = null;
+        setProfileEditButtonsState(false);
+        renderProfileDetails();
+      });
+    }
+
+    if (profileSaveBtn) {
+      profileSaveBtn.addEventListener('click', () => {
+        const fullName = String((document.getElementById('profileFieldFullName') || {}).value || '').trim();
+        const username = String((document.getElementById('profileFieldUsername') || {}).value || '').trim();
+        const email = String((document.getElementById('profileFieldEmail') || {}).value || '').trim().toLowerCase();
+        const department = String((document.getElementById('profileFieldDepartment') || {}).value || '').trim();
+        const semester = String((document.getElementById('profileFieldSemester') || {}).value || '').trim();
+        const collegeIdNo = String((document.getElementById('profileFieldCollegeIdNo') || {}).value || '').trim();
+        const college = String((document.getElementById('profileFieldCollege') || {}).value || '').trim();
+        const mobileNo = String((document.getElementById('profileFieldMobileNo') || {}).value || '').trim();
+        const gender = String((document.getElementById('profileFieldGender') || {}).value || '').trim();
+        const permanentAddress = String((document.getElementById('profileFieldPermanentAddress') || {}).value || '').trim();
+
+        if (!fullName || !username) {
+          alert('Full Name and Username are required.');
+          return;
+        }
+
+        const studentProfile = JSON.parse(localStorage.getItem('studentProfile') || '{}');
+        localStorage.setItem('studentProfile', JSON.stringify({
+          ...studentProfile,
+          fullName,
+          username,
+          email,
+          department,
+          semester,
+          collegeIdNo,
+          college,
+          mobileNo,
+          gender,
+          permanentAddress
+        }));
+
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (currentUser && Object.keys(currentUser).length) {
+          localStorage.setItem('currentUser', JSON.stringify({
+            ...currentUser,
+            fullName,
+            username,
+            email: email || currentUser.email,
+            department,
+            semester,
+            mobileNo,
+            gender
+          }));
+        }
+
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const prevEmail = normalizeLower((profileEditSnapshot || {}).email);
+        const prevUsername = normalizeLower((profileEditSnapshot || {}).username);
+        const userIndex = users.findIndex((u) => {
+          const itemEmail = normalizeLower(u.email);
+          const itemUsername = normalizeLower(u.username);
+          return (prevEmail && itemEmail === prevEmail) || (prevUsername && itemUsername === prevUsername);
+        });
+
+        if (userIndex >= 0) {
+          const nameParts = fullName.split(/\s+/).filter(Boolean);
+          const firstName = nameParts.shift() || '';
+          const lastName = nameParts.join(' ');
+
+          users[userIndex] = {
+            ...users[userIndex],
+            firstName,
+            lastName,
+            username,
+            email: email || users[userIndex].email,
+            department,
+            semester,
+            collegeIdNo,
+            college,
+            mobileNo,
+            gender,
+            permanentAddress
+          };
+          localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        profileEditSnapshot = null;
+        setProfileEditButtonsState(false);
+        renderProfileDetails();
+        loadProfileInfo();
+        alert('Profile updated successfully.');
+      });
+    }
+
+    if (profilePhotoUploadBtn && profilePhotoInput) {
+      profilePhotoUploadBtn.addEventListener('click', () => {
+        profilePhotoInput.click();
+      });
+
+      profilePhotoInput.addEventListener('change', () => {
+        const file = profilePhotoInput.files && profilePhotoInput.files[0];
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+          alert('Please choose an image file.');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          openCropEditorFromSource(String(reader.result || ''));
+        };
+        reader.onerror = () => {
+          alert('Unable to read selected image. Please try again.');
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (profilePhotoEditBtn) {
+      profilePhotoEditBtn.addEventListener('click', () => {
+        openCropEditorFromSource(localStorage.getItem('profileImage') || '');
+      });
+    }
+
+    if (profilePhotoRemoveBtn) {
+      profilePhotoRemoveBtn.addEventListener('click', () => {
+        localStorage.removeItem('profileImage');
+        profileCropImage = null;
+        setProfileAvatarPreview('');
+        hideProfileCropPanel();
+        loadProfileInfo();
+      });
+    }
+
+    [profileCropZoom, profileCropX, profileCropY].forEach((control) => {
+      if (!control) return;
+      control.addEventListener('input', renderProfileCropPreview);
+    });
+
+    if (profileCropApplyBtn) {
+      profileCropApplyBtn.addEventListener('click', applyCroppedProfilePhoto);
+    }
+
+    if (profileCropCancelBtn) {
+      profileCropCancelBtn.addEventListener('click', hideProfileCropPanel);
+    }
+
+    if (profileLogoutBtn) {
+      profileLogoutBtn.addEventListener('click', () => {
+        if (!confirm('Are you sure you want to logout?')) return;
+        clearAuthSession();
+        alert('Logged out successfully.');
+        window.location.href = 'login.html';
+      });
+    }
+
     // Debounce function for search input
     function debounce(func, wait) {
       let timeout;
@@ -2971,11 +3778,17 @@
       };
     }
 
-    // Search is now handled from index.html
-
-    function filterMaterials(query = '', branch = '', semester = '', type = '', selectedSubject = '') {
+    function filterMaterials(query = '', branch = '', semester = '', type = '', selectedSubject = '', sortMode = 'relevance') {
       const queryLower = query.toLowerCase().trim();
-      const filtered = materials.filter(material => {
+      const cacheKey = buildFilterCacheKey(queryLower, branch, semester, type, selectedSubject, sortMode);
+      const cachedResult = getCachedFilterResult(cacheKey);
+
+      if (cachedResult) {
+        renderMaterials(cachedResult, query);
+        return;
+      }
+
+      const filtered = materialSearchIndex.filter(({ material, meta }) => {
         // Apply filters
         if (branch && material.branch !== branch) return false;
         if (semester && material.semester !== semester) return false;
@@ -2985,23 +3798,39 @@
         // If no search query, include the material (filters only)
         if (!queryLower) return true;
 
-        // Search in multiple fields with priority
-        const title = (material.title || '').toLowerCase();
-         const materialSubject = (material.subject || '').toLowerCase();
-        const code = (material.code || '').toLowerCase();
-        const description = (material.description || '').toLowerCase();
-        
-        // Check if query matches any field
-        return title.includes(queryLower) || 
-           materialSubject.includes(queryLower) || 
-               code.includes(queryLower) || 
-               description.includes(queryLower);
-      });
+        return meta.searchBlob.includes(queryLower);
+      }).map(entry => entry.material);
 
-      renderMaterials(filtered);
+      const sorted = sortMaterials(filtered, sortMode, queryLower);
+      setCachedFilterResult(cacheKey, sorted);
+      renderMaterials(sorted, query);
     }
 
-    // Event listeners removed - search is handled from index.html
+    const debouncedSearch = debounce((value) => {
+      activeSearchQuery = String(value || '').trim();
+      applyCurrentFilters();
+    }, 180);
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (event) => {
+        debouncedSearch(event.target.value);
+      });
+
+      searchInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          activeSearchQuery = searchInput.value.trim();
+          applyCurrentFilters();
+        }
+      });
+    }
+
+    if (searchInput && searchBtn) {
+      searchBtn.addEventListener('click', () => {
+        activeSearchQuery = searchInput.value.trim();
+        applyCurrentFilters();
+      });
+    }
 
     branchFilter.addEventListener('change', () => {
       populateSubjectOptions();
@@ -3012,6 +3841,20 @@
       applyCurrentFilters();
     });
     subjectFilter.addEventListener('change', applyCurrentFilters);
+    sortBy.addEventListener('change', applyCurrentFilters);
+
+    clearFiltersBtn.addEventListener('click', () => {
+      activeSearchQuery = '';
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      branchFilter.value = '';
+      semesterFilter.value = '';
+      subjectFilter.value = '';
+      sortBy.value = 'relevance';
+      populateSubjectOptions();
+      applyCurrentFilters();
+    });
 
     // Initialize
     populateFilterOptions();
@@ -3019,11 +3862,16 @@
 
     // Check if there's a search query from home page
     activeSearchQuery = sessionStorage.getItem('searchQuery') || '';
-    if (activeSearchQuery) {
+    if (activeSearchQuery && searchInput) {
+      searchInput.value = activeSearchQuery;
       sessionStorage.removeItem('searchQuery'); // Clear it after use
     }
 
     applyCurrentFilters();
+
+    window.addEventListener('beforeunload', () => {
+      clearInterval(filterCacheSweepTimer);
+    });
 
     // Create floating particles
     function createFloatingParticles() {
@@ -3508,13 +4356,6 @@
         min-height: 220px;
       }
 
-      html.device-phone .search-container input,
-      html.device-phone .search-container select {
-        padding: 12px 16px;
-        font-size: 16px;
-        border-radius: 12px;
-      }
-
       /* Prevent zoom on input focus for iOS */
       html.device-phone.os-ios input,
       html.device-phone.os-ios select,
@@ -3602,12 +4443,6 @@
 
       html.os-ios .material-card {
         -webkit-tap-highlight-color: transparent;
-      }
-
-      html.os-ios .search-container button {
-        -webkit-appearance: none;
-        appearance: none;
-        border-radius: 12px;
       }
 
       /* ========== ANDROID SPECIFIC ADJUSTMENTS ========== */

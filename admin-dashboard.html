@@ -13,6 +13,11 @@
     :root {
       --bg: #0f172a;
       --bg-light: #111827;
+      --site-bg-1: #061225;
+      --site-bg-2: #0b1f3f;
+      --site-bg-3: #123a63;
+      --site-glow-a: rgba(46, 127, 255, 0.22);
+      --site-glow-b: rgba(16, 185, 255, 0.16);
       --primary: #3b82f6;
       --accent: #22c55e;
       --text: #e5e7eb;
@@ -27,15 +32,73 @@
     }
 
     body {
-      background: #000000;
+      background:
+        radial-gradient(900px 500px at 12% 10%, var(--site-glow-a), transparent 60%),
+        radial-gradient(800px 420px at 88% 85%, var(--site-glow-b), transparent 60%),
+        linear-gradient(145deg, var(--site-bg-1) 0%, var(--site-bg-2) 45%, var(--site-bg-3) 100%);
       color: var(--text);
       padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       width: 100%;
       margin: 0;
       overflow-x: hidden;
+      overflow-y: auto;
+      min-height: 100dvh;
+      -webkit-overflow-scrolling: touch;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      inset: -15% -10%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.55;
+      will-change: transform, opacity;
+    }
+
+    body::before {
+      background:
+        radial-gradient(40% 30% at 20% 22%, rgba(56, 189, 248, 0.22), transparent 72%),
+        radial-gradient(38% 32% at 78% 74%, rgba(59, 130, 246, 0.2), transparent 72%);
+      animation: auroraDrift 18s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      background:
+        radial-gradient(34% 28% at 70% 25%, rgba(96, 165, 250, 0.2), transparent 74%),
+        radial-gradient(36% 30% at 28% 80%, rgba(37, 99, 235, 0.2), transparent 74%);
+      animation: auroraDriftReverse 24s ease-in-out infinite alternate;
+      opacity: 0.45;
+    }
+
+    @keyframes auroraDrift {
+      0% {
+        transform: translate3d(-2%, -1%, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(2%, 1.5%, 0) scale(1.06);
+      }
+      100% {
+        transform: translate3d(0.5%, 3%, 0) scale(1.02);
+      }
+    }
+
+    @keyframes auroraDriftReverse {
+      0% {
+        transform: translate3d(1%, 2%, 0) scale(1.02);
+      }
+      50% {
+        transform: translate3d(-2.5%, -1.5%, 0) scale(1.08);
+      }
+      100% {
+        transform: translate3d(-0.5%, 1%, 0) scale(1.03);
+      }
     }
 
     .container {
@@ -45,14 +108,16 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       padding: 20px;
     }
 
     .header {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+      background:
+        radial-gradient(140% 120% at 8% -20%, rgba(59, 130, 246, 0.2), transparent 55%),
+        linear-gradient(135deg, rgba(8, 16, 34, 0.86), rgba(9, 22, 48, 0.82));
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(148, 163, 184, 0.3);
       border-radius: 16px;
       padding: 30px;
       margin-bottom: 30px;
@@ -61,6 +126,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 20px;
+      box-shadow: 0 20px 44px rgba(2, 6, 23, 0.42), inset 0 1px 0 rgba(147, 197, 253, 0.14);
     }
 
     .header h1 {
@@ -101,15 +167,16 @@
 
     .btn {
       padding: 12px 24px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      border: none;
+      border: 1px solid rgba(255, 255, 255, 0.16);
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 8px 22px rgba(2, 6, 23, 0.35);
     }
 
     .btn-primary {
@@ -138,8 +205,8 @@
     }
 
     .filters {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(8, 17, 37, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.28);
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 20px;
@@ -170,10 +237,11 @@
     }
 
     .table-container {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(8, 17, 37, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.28);
       border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 16px 36px rgba(2, 6, 23, 0.34), inset 0 1px 0 rgba(147, 197, 253, 0.12);
     }
 
     table {
@@ -257,6 +325,41 @@
       color: var(--muted);
     }
 
+    .script-status {
+      margin-top: 8px;
+      font-size: 12px;
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .script-status.checking {
+      color: #cbd5e1;
+      background: rgba(148, 163, 184, 0.16);
+      border-color: rgba(148, 163, 184, 0.35);
+    }
+
+    .script-status.new {
+      color: #86efac;
+      background: rgba(34, 197, 94, 0.16);
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    .script-status.old {
+      color: #fecaca;
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.45);
+    }
+
+    .script-status.unknown {
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.16);
+      border-color: rgba(245, 158, 11, 0.45);
+    }
+
     .uploads-panel {
       width: 100%;
       margin-top: 20px;
@@ -300,6 +403,59 @@
         min-width: 800px;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::before,
+      body::after {
+        animation: none;
+      }
+
+      .btn,
+      .delete-btn,
+      tbody tr {
+        transition: none;
+      }
+    }
+
+    /* Stitch rhythm tuning */
+    @media (max-width: 360px) {
+      .container {
+        padding: 12px;
+      }
+
+      .header {
+        padding: 18px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .btn {
+        padding: 10px 14px;
+        font-size: 12px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 24px;
+      }
+
+      .header h1 {
+        font-size: 34px;
+      }
+
+      .table-container {
+        border-radius: 14px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 1500px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -332,6 +488,9 @@
         <button class="btn btn-primary" onclick="syncGoogleSheetNow()">
           🔄 Sync Sheet
         </button>
+        <button class="btn btn-info" onclick="migrateSheetPasswordsNow()">
+          🔐 Migrate Passwords
+        </button>
         <button class="btn btn-success" onclick="exportToCSV()">
           📥 Export CSV
         </button>
@@ -343,6 +502,7 @@
         </button>
       </div>
       <div id="dataSourceStatus" class="data-status">Source: Local Storage</div>
+      <div id="scriptVersionStatus" class="script-status checking">Script version: Checking...</div>
     </div>
 
     <div class="filters">
@@ -431,7 +591,13 @@
     const AUTH_SESSION_KEY = 'authSession';
     const GOOGLE_SHEET_CONFIG_KEY = 'googleSheetApiUrl';
     const DEFAULT_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyb6bFjDHX08ZQRWyF8G6VcKjHlzXS02dbf5Kn5XZELGGyN-91Og8CTxllsmD8QTA/exec';
+    const SCRIPT_VERSION_STATUS_TTL_MS = 2 * 60 * 1000;
     let googleSheetApiUrl = (localStorage.getItem(GOOGLE_SHEET_CONFIG_KEY) || DEFAULT_GOOGLE_SHEET_URL).trim();
+    let scriptVersionStatusCache = {
+      checkedAt: 0,
+      status: 'checking',
+      text: 'Script version: Checking...'
+    };
 
     if (!localStorage.getItem(GOOGLE_SHEET_CONFIG_KEY) && DEFAULT_GOOGLE_SHEET_URL) {
       localStorage.setItem(GOOGLE_SHEET_CONFIG_KEY, DEFAULT_GOOGLE_SHEET_URL);
@@ -510,6 +676,71 @@
       const statusEl = document.getElementById('dataSourceStatus');
       if (statusEl) {
         statusEl.textContent = message;
+      }
+    }
+
+    function setScriptVersionStatus(status, text) {
+      const statusEl = document.getElementById('scriptVersionStatus');
+      if (!statusEl) {
+        return;
+      }
+
+      statusEl.className = `script-status ${status}`;
+      statusEl.textContent = text;
+      scriptVersionStatusCache = {
+        checkedAt: Date.now(),
+        status,
+        text
+      };
+    }
+
+    async function refreshScriptVersionStatus(force = false) {
+      if (!googleSheetApiUrl) {
+        setScriptVersionStatus('unknown', 'Script version: Not configured');
+        return;
+      }
+
+      const now = Date.now();
+      const isCacheFresh = (now - scriptVersionStatusCache.checkedAt) < SCRIPT_VERSION_STATUS_TTL_MS;
+      if (!force && isCacheFresh) {
+        const cache = scriptVersionStatusCache;
+        setScriptVersionStatus(cache.status, cache.text);
+        return;
+      }
+
+      setScriptVersionStatus('checking', 'Script version: Checking...');
+
+      const migrateUrl = googleSheetApiUrl.includes('?')
+        ? `${googleSheetApiUrl}&action=migratePasswords`
+        : `${googleSheetApiUrl}?action=migratePasswords`;
+
+      try {
+        const response = await fetch(migrateUrl, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Status ${response.status}`);
+        }
+
+        const payload = await response.json();
+        const messageText = String(payload.message || '').toLowerCase();
+        const hasUpdatedCount = Object.prototype.hasOwnProperty.call(payload, 'updated');
+
+        if (payload.status === 'success' && hasUpdatedCount && messageText.indexOf('password migration completed') !== -1) {
+          setScriptVersionStatus('new', 'Script version: Updated (supports migration)');
+          return;
+        }
+
+        if (payload.status === 'success') {
+          setScriptVersionStatus('old', 'Script version: Old deployment (redeploy required)');
+          return;
+        }
+
+        setScriptVersionStatus('unknown', 'Script version: Unknown response');
+      } catch (error) {
+        setScriptVersionStatus('unknown', 'Script version: Could not verify');
       }
     }
 
@@ -735,6 +966,8 @@
     }
 
     async function loadUsers() {
+      await refreshScriptVersionStatus();
+
       const localUsers = JSON.parse(localStorage.getItem('users')) || [];
       let sheetUsers = [];
 
@@ -756,7 +989,7 @@
       await loadUploadedFiles();
     }
 
-    function setGoogleSheetLink() {
+    async function setGoogleSheetLink() {
       const current = googleSheetApiUrl || '';
       const nextUrl = prompt(
         'Paste your Google Apps Script Web App URL (must return JSON for action=getUsers):',
@@ -772,12 +1005,14 @@
         localStorage.removeItem(GOOGLE_SHEET_CONFIG_KEY);
         googleSheetApiUrl = '';
         alert('Google Sheet link removed.');
+        await refreshScriptVersionStatus(true);
         loadUsers();
         return;
       }
 
       localStorage.setItem(GOOGLE_SHEET_CONFIG_KEY, cleanUrl);
       googleSheetApiUrl = cleanUrl;
+      await refreshScriptVersionStatus(true);
       alert('Google Sheet link saved. Click Sync Sheet to fetch data.');
     }
 
@@ -787,8 +1022,51 @@
         return;
       }
 
+      await refreshScriptVersionStatus(true);
       await loadUsers();
       alert('Google Sheet sync completed.');
+    }
+
+    async function migrateSheetPasswordsNow() {
+      if (!googleSheetApiUrl) {
+        alert('Please connect your Google Sheet first.');
+        return;
+      }
+
+      const migrateUrl = googleSheetApiUrl.includes('?')
+        ? `${googleSheetApiUrl}&action=migratePasswords`
+        : `${googleSheetApiUrl}?action=migratePasswords`;
+
+      try {
+        const response = await fetch(migrateUrl, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Migration request failed with status ${response.status}`);
+        }
+
+        const payload = await response.json();
+        if (payload.status !== 'success') {
+          throw new Error(payload.message || 'Migration failed.');
+        }
+
+        const messageText = String(payload.message || '').toLowerCase();
+        const hasUpdatedCount = Object.prototype.hasOwnProperty.call(payload, 'updated');
+        if (!hasUpdatedCount || messageText.indexOf('password migration completed') === -1) {
+          throw new Error('Your Apps Script deployment is outdated. Please redeploy the latest script version, then try migration again.');
+        }
+
+        const updated = Number(payload.updated || 0);
+        await refreshScriptVersionStatus(true);
+        await loadUsers();
+        alert(`Password migration completed. Updated rows: ${updated}`);
+      } catch (error) {
+        console.error('Password migration failed:', error);
+        await refreshScriptVersionStatus(true);
+        alert(`Migration failed: ${error.message || 'Please redeploy Apps Script and try again.'}`);
+      }
     }
 
     // Update statistics
@@ -1092,7 +1370,8 @@
         }
 
         if (this.isMobile) {
-          document.body.style.overscrollBehavior = 'contain';
+          document.body.style.overscrollBehaviorY = 'auto';
+          document.body.style.webkitOverflowScrolling = 'touch';
         }
       }
 
@@ -1116,11 +1395,7 @@
           }, 250);
         });
 
-        if (this.os === 'iOS') {
-          document.addEventListener('gesturestart', (e) => {
-            e.preventDefault();
-          });
-        }
+        // Keep native iOS gestures enabled to avoid blocking scroll.
       }
     }
 

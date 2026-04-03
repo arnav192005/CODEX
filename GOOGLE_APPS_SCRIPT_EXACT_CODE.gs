@@ -14,6 +14,9 @@ const USER_HEADERS = [
   'semester',
   'collegeIdNo',
   'college',
+  'mobileNo',
+  'gender',
+  'permanentAddress',
   'createdAt'
 ];
 
@@ -65,15 +68,23 @@ function doGet(e) {
         user.semester,
         user.collegeIdNo,
         user.college,
+        user.mobileNo,
+        user.gender,
+        user.permanentAddress,
         user.createdAt
       ]);
 
       return json_({ status: 'success', message: 'User saved to Google Sheet.', id: user.id });
     }
 
+    if (action === 'migratepasswords') {
+      const updated = migrateLegacyEncodedPasswords_();
+      return json_({ status: 'success', message: 'Password migration completed.', updated: updated });
+    }
+
     return json_({
       status: 'success',
-      message: 'Google Apps Script is running. Use ?action=getUsers, ?action=saveUser, ?action=getUploads.'
+      message: 'Google Apps Script is running. Use ?action=getUsers, ?action=saveUser, ?action=getUploads, ?action=migratePasswords.'
     });
   } catch (error) {
     return json_({ status: 'error', message: String(error) });
@@ -93,6 +104,11 @@ function doPost(e) {
     if (action === 'getuploads') {
       const uploads = getUploads_();
       return json_({ status: 'success', data: uploads, count: uploads.length });
+    }
+
+    if (action === 'migratepasswords') {
+      const updated = migrateLegacyEncodedPasswords_();
+      return json_({ status: 'success', message: 'Password migration completed.', updated: updated });
     }
 
     if (action === 'uploadfile') {
@@ -132,6 +148,9 @@ function doPost(e) {
       user.semester,
       user.collegeIdNo,
       user.college,
+      user.mobileNo,
+      user.gender,
+      user.permanentAddress,
       user.createdAt
     ]);
 
@@ -169,11 +188,14 @@ function getUsers_() {
       lastName: String(record.lastName || ''),
       username: String(record.username || ''),
       email: String(record.email || '').toLowerCase(),
-      password: String(record.password || ''),
+      password: normalizePassword_(record.password),
       department: String(record.department || ''),
       semester: String(record.semester || ''),
       collegeIdNo: String(record.collegeIdNo || ''),
       college: String(record.college || ''),
+      mobileNo: String(record.mobileNo || ''),
+      gender: String(record.gender || ''),
+      permanentAddress: String(record.permanentAddress || ''),
       createdAt: String(record.createdAt || '')
     };
   }).filter(function (user) {
@@ -415,13 +437,76 @@ function normalizeUser_(payload) {
     lastName: String(payload.lastName || '').trim(),
     username: String(payload.username || '').trim(),
     email: String(payload.email || '').trim().toLowerCase(),
-    password: String(payload.password || '').trim(),
+    password: normalizePassword_(payload.password),
     department: String(payload.department || '').trim(),
     semester: String(payload.semester || '').trim(),
     collegeIdNo: String(payload.collegeIdNo || '').trim(),
     college: String(payload.college || '').trim(),
+    mobileNo: String(payload.mobileNo || '').trim(),
+    gender: String(payload.gender || '').trim(),
+    permanentAddress: String(payload.permanentAddress || '').trim(),
     createdAt: String(payload.createdAt || new Date().toISOString())
   };
+}
+
+function normalizePassword_(value) {
+  const password = String(value || '').trim();
+  const decoded = tryDecodeLegacyBase64_(password);
+  return decoded == null ? password : decoded;
+}
+
+function migrateLegacyEncodedPasswords_() {
+  const sheet = getOrCreateSheet_();
+  const values = sheet.getDataRange().getValues();
+
+  if (values.length <= 1) {
+    return 0;
+  }
+
+  const headers = values[0].map(function (h) { return String(h || '').trim(); });
+  const passwordIndex = headers.indexOf('password');
+
+  if (passwordIndex === -1) {
+    return 0;
+  }
+
+  let updatedCount = 0;
+
+  for (var rowIndex = 2; rowIndex <= values.length; rowIndex++) {
+    const original = String(values[rowIndex - 1][passwordIndex] || '').trim();
+    const normalized = normalizePassword_(original);
+
+    if (original !== normalized) {
+      sheet.getRange(rowIndex, passwordIndex + 1).setValue(normalized);
+      updatedCount++;
+    }
+  }
+
+  return updatedCount;
+}
+
+function tryDecodeLegacyBase64_(value) {
+  if (!value || value.length < 8 || value.indexOf('=') === -1) {
+    return null;
+  }
+
+  if (!/^[A-Za-z0-9+/=]+$/.test(value) || value.length % 4 !== 0) {
+    return null;
+  }
+
+  try {
+    const bytes = Utilities.base64Decode(value);
+    const decoded = Utilities.newBlob(bytes).getDataAsString('UTF-8');
+    if (!decoded || /[\x00-\x08\x0E-\x1F]/.test(decoded)) {
+      return null;
+    }
+
+    const reEncoded = Utilities.base64Encode(decoded).replace(/=+$/, '');
+    const original = value.replace(/=+$/, '');
+    return reEncoded === original ? decoded : null;
+  } catch (error) {
+    return null;
+  }
 }
 
 function json_(obj) {

@@ -13,6 +13,11 @@
     :root {
       --bg: #0f172a;
       --bg-light: #111827;
+      --site-bg-1: #061225;
+      --site-bg-2: #0b1f3f;
+      --site-bg-3: #123a63;
+      --site-glow-a: rgba(46, 127, 255, 0.22);
+      --site-glow-b: rgba(16, 185, 255, 0.16);
       --primary: #3b82f6;
       --primary-soft: rgba(59, 130, 246, 0.15);
       --accent: #22c55e;
@@ -34,15 +39,22 @@
     }
 
     body {
-      background: #000000;
+      background:
+        radial-gradient(900px 500px at 12% 10%, var(--site-glow-a), transparent 60%),
+        radial-gradient(800px 420px at 88% 85%, var(--site-glow-b), transparent 60%),
+        linear-gradient(145deg, var(--site-bg-1) 0%, var(--site-bg-2) 45%, var(--site-bg-3) 100%);
       color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       width: 100%;
       margin: 0;
       padding: 0;
       overflow-x: hidden;
+      overflow-y: auto;
+      min-height: 100dvh;
+      -webkit-overflow-scrolling: touch;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
     }
 
     a {
@@ -60,7 +72,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
 
     header {
@@ -306,13 +318,13 @@
     .nav-pill {
       padding: 8px 14px;
       border-radius: 999px;
-      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8 55%, #0ea5e9);
       color: #fff;
       font-weight: 700;
       font-size: 12px;
       letter-spacing: 0.1px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.3);
+      border: 1px solid rgba(147, 197, 253, 0.28);
+      box-shadow: 0 10px 22px rgba(2, 132, 199, 0.3);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       white-space: nowrap;
     }
@@ -327,7 +339,7 @@
 
     .nav-pill:hover {
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px rgba(124, 58, 237, 0.55);
+      box-shadow: 0 14px 30px rgba(14, 116, 244, 0.46);
     }
 
     .theme-toggle {
@@ -376,7 +388,7 @@
     .back-home-btn {
       width: 40px;
       height: 40px;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8 55%, #0ea5e9);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -438,10 +450,12 @@
 
     footer {
       margin-top: 32px;
-      padding-top: 16px;
+      padding: 14px 16px;
       font-size: 11px;
       color: var(--muted);
-      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 14px;
+      background: rgba(8, 17, 37, 0.6);
       display: flex;
       justify-content: space-between;
       gap: 10px;
@@ -1046,6 +1060,53 @@
         font-size: 16px;
       }
     }
+
+    /* Stitch rhythm tuning */
+    @media (max-width: 360px) {
+      .page {
+        padding: 12px 8px 28px;
+      }
+
+      header {
+        gap: 10px;
+        padding: 9px 12px;
+      }
+
+      .about-content {
+        font-size: 13px;
+        line-height: 1.58;
+      }
+
+      .nav-pill {
+        padding: 7px 11px;
+        font-size: 11px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 24px 24px 48px;
+      }
+
+      .about-main h1 {
+        font-size: clamp(32px, 4vw, 44px);
+      }
+
+      .about-content {
+        font-size: 15px;
+        line-height: 1.72;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .page {
+        max-width: 1240px;
+      }
+
+      .about-section {
+        gap: 32px;
+      }
+    }
   </style>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
@@ -1460,7 +1521,8 @@
         }
 
         if (this.isMobile) {
-          document.body.style.overscrollBehavior = 'contain';
+          document.body.style.overscrollBehaviorY = 'auto';
+          document.body.style.webkitOverflowScrolling = 'touch';
         }
       }
 
@@ -1484,11 +1546,7 @@
           }, 250);
         });
 
-        if (this.os === 'iOS') {
-          document.addEventListener('gesturestart', (e) => {
-            e.preventDefault();
-          });
-        }
+        // Keep native iOS gestures enabled to avoid blocking scroll.
       }
     }
 

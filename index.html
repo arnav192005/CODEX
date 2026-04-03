@@ -23,17 +23,30 @@
     @media (max-width: 768px) {
       * {
         animation: none !important;
-        transition: opacity 0.2s ease, transform 0.2s ease !important;
+        transition: opacity 0.2s ease, transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
       }
       
       *::before, *::after {
         animation: none !important;
+      }
+
+      /* Re-enable intentional, lightweight phone animations */
+      .mobile-effects-enabled::before,
+      .mobile-effects-enabled::after,
+      .mobile-scroll-reveal,
+      .mobile-ripple-effect {
+        animation-play-state: running !important;
       }
     }
     
     :root {
       --bg: #0f172a;
       --bg-light: #111827;
+      --site-bg-1: #061225;
+      --site-bg-2: #0b1f3f;
+      --site-bg-3: #123a63;
+      --site-glow-a: rgba(46, 127, 255, 0.22);
+      --site-glow-b: rgba(16, 185, 255, 0.16);
       --primary: #3b82f6;
       --primary-soft: rgba(59, 130, 246, 0.15);
       --accent: #22c55e;
@@ -62,22 +75,29 @@
     }
 
     body {
-      background: #000000;
+      background:
+        radial-gradient(900px 500px at 12% 10%, var(--site-glow-a), transparent 60%),
+        radial-gradient(800px 420px at 88% 85%, var(--site-glow-b), transparent 60%),
+        linear-gradient(145deg, var(--site-bg-1) 0%, var(--site-bg-2) 45%, var(--site-bg-3) 100%);
       color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       width: 100%;
+      min-height: 100dvh;
       margin: 0;
       padding: 0;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
     }
     
     @media (min-width: 1024px) {
       body {
-        background: #000000;
+        background-attachment: fixed;
       }
     }
 
@@ -95,7 +115,7 @@
 
     .page {
       width: 100%;
-      height: 100%;
+      min-height: 100dvh;
       margin: 0 auto;
       padding: 15px 12px 40px;
       display: flex;
@@ -103,7 +123,7 @@
       align-items: center;
       justify-content: flex-start;
       text-align: center;
-      overflow-y: auto;
+      overflow: visible;
       max-width: 100%;
     }
     
@@ -349,13 +369,13 @@
       overflow: hidden;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      color: #e2e8f0;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.28), rgba(14, 165, 233, 0.18));
+      color: #dbeafe;
       font-weight: 600;
       font-size: 11px;
       letter-spacing: 0.1px;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(125, 211, 252, 0.3);
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.25), inset 0 1px 0 rgba(191, 219, 254, 0.2);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -372,8 +392,8 @@
 
     .nav-pill:hover {
       transform: translateY(-1px);
-      border-color: rgba(255, 255, 255, 0.28);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+      border-color: rgba(125, 211, 252, 0.5);
+      box-shadow: 0 12px 24px rgba(2, 132, 199, 0.36), inset 0 1px 0 rgba(191, 219, 254, 0.24);
     }
 
     /* iOS-like liquid glass sheen */
@@ -626,6 +646,120 @@
       font-weight: 700;
     }
 
+    .profile-avatar-wrap {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      background: rgba(148, 163, 184, 0.08);
+      border-radius: 12px;
+    }
+
+    .profile-avatar-preview {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(96, 165, 250, 0.42);
+      background: rgba(15, 23, 42, 0.8);
+      flex-shrink: 0;
+    }
+
+    .profile-avatar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .profile-avatar-btn {
+      border: 1px solid rgba(96, 165, 250, 0.4);
+      background: rgba(59, 130, 246, 0.14);
+      color: #bfdbfe;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .profile-avatar-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.24);
+      background: rgba(59, 130, 246, 0.2);
+    }
+
+    .profile-avatar-btn.remove {
+      border-color: rgba(239, 68, 68, 0.44);
+      background: rgba(239, 68, 68, 0.14);
+      color: #fecaca;
+    }
+
+    .profile-crop-panel {
+      display: none;
+      margin-bottom: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(15, 23, 42, 0.66);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .profile-crop-panel.show {
+      display: block;
+    }
+
+    .profile-crop-title {
+      font-size: 12px;
+      color: #93c5fd;
+      margin-bottom: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .profile-crop-canvas-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .profile-crop-canvas {
+      width: 220px;
+      height: 220px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: radial-gradient(circle at 50% 50%, rgba(148, 163, 184, 0.14), rgba(15, 23, 42, 0.9));
+    }
+
+    .profile-crop-controls {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .profile-crop-row {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .profile-crop-row label {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.35px;
+    }
+
+    .profile-crop-row input[type="range"] {
+      width: 100%;
+      accent-color: #3b82f6;
+    }
+
     .profile-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -660,10 +794,70 @@
       word-break: break-word;
     }
 
+    .profile-item-input {
+      width: 100%;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.72);
+      border-radius: 8px;
+      color: #e2e8f0;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .profile-item-input:focus {
+      border-color: rgba(96, 165, 250, 0.65);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.18);
+    }
+
+    .profile-item-input[readonly] {
+      opacity: 0.85;
+      cursor: not-allowed;
+    }
+
     .profile-modal-actions {
       margin-top: 14px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .profile-edit-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .profile-action-btn {
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid rgba(96, 165, 250, 0.45);
+      background: rgba(59, 130, 246, 0.15);
+      color: #bfdbfe;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .profile-action-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(59, 130, 246, 0.24);
+    }
+
+    .profile-action-btn.save {
+      border-color: rgba(34, 197, 94, 0.45);
+      background: rgba(34, 197, 94, 0.16);
+      color: #bbf7d0;
+    }
+
+    .profile-action-btn.cancel {
+      border-color: rgba(148, 163, 184, 0.4);
+      background: rgba(148, 163, 184, 0.14);
+      color: #e2e8f0;
     }
 
     .profile-logout-btn {
@@ -686,6 +880,18 @@
     @media (max-width: 640px) {
       .profile-grid {
         grid-template-columns: 1fr;
+      }
+
+      .profile-avatar-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .profile-crop-canvas {
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+        aspect-ratio: 1 / 1;
       }
     }
 
@@ -1050,9 +1256,11 @@
       margin-top: auto;
       text-align: center;
       padding: 20px;
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(219, 234, 254, 0.62);
       font-size: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 14px;
+      background: rgba(8, 17, 37, 0.6);
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -1077,6 +1285,372 @@
     
     footer a:hover {
       color: rgba(255, 255, 255, 0.6);
+    }
+
+    .smart-search-container {
+      margin-top: 34px;
+      width: min(760px, 100%);
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      background:
+        radial-gradient(160% 120% at 12% 0%, rgba(59, 130, 246, 0.18), transparent 52%),
+        linear-gradient(135deg, rgba(8, 16, 34, 0.82), rgba(7, 18, 42, 0.72));
+      box-shadow:
+        0 20px 42px rgba(2, 6, 23, 0.52),
+        inset 0 1px 0 rgba(147, 197, 253, 0.2);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .smart-search-container::before {
+      content: '';
+      position: absolute;
+      inset: -30% 44% 58% -26%;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.28), transparent 72%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .smart-search-top,
+    .search-row,
+    .home-search-suggestions,
+    .recent-search-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    .smart-search-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .smart-search-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      border: 1px solid rgba(129, 140, 248, 0.35);
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: rgba(67, 56, 202, 0.16);
+      font-weight: 700;
+    }
+
+    .smart-search-caption {
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .smart-search-input {
+      width: 100%;
+      min-width: 220px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.32);
+      background: rgba(15, 23, 42, 0.86);
+      color: #e5e7eb;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .smart-search-input:focus {
+      border-color: rgba(125, 211, 252, 0.72);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2), 0 10px 24px rgba(2, 132, 199, 0.22);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .smart-action-btn {
+      padding: 14px 18px;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8 55%, #0ea5e9);
+      min-width: 160px;
+      white-space: nowrap;
+    }
+
+    .smart-action-btn:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.42);
+    }
+
+    .home-search-suggestions {
+      margin-top: 8px;
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      background: rgba(2, 6, 23, 0.9);
+      border-radius: 10px;
+      overflow: hidden;
+      text-align: left;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .home-search-suggestions.hidden {
+      display: none;
+    }
+
+    .home-search-suggestion-item {
+      width: 100%;
+      padding: 10px 12px;
+      border: none;
+      background: transparent;
+      color: #cbd5e1;
+      text-align: left;
+      cursor: pointer;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+      font-size: 13px;
+    }
+
+    .home-search-suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .home-search-suggestion-item:hover,
+    .home-search-suggestion-item.active {
+      background: rgba(59, 130, 246, 0.2);
+      color: #e5e7eb;
+    }
+
+    .recent-search-wrap {
+      margin-top: 14px;
+      text-align: left;
+    }
+
+    .recent-search-title {
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+    }
+
+    .search-hint-row {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .search-hint-chip {
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      background: rgba(30, 41, 59, 0.62);
+      color: #bfdbfe;
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
+      letter-spacing: 0.01em;
+    }
+
+    @media (max-width: 700px) {
+      .smart-search-container {
+        padding: 14px;
+      }
+
+      .search-row {
+        grid-template-columns: 1fr;
+      }
+
+      .smart-action-btn {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .smart-search-caption {
+        font-size: 12px;
+      }
+    }
+
+    .recent-search-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .recent-search-chip {
+      border: 1px solid rgba(96, 165, 250, 0.3);
+      background: rgba(59, 130, 246, 0.14);
+      color: #93c5fd;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .recent-search-chip:hover {
+      background: rgba(59, 130, 246, 0.24);
+      color: #dbeafe;
+      transform: translateY(-1px);
+    }
+
+    /* Smartphone-only effects */
+    @media (max-width: 768px) {
+      .mobile-effects-enabled {
+        position: relative;
+      }
+
+      .mobile-effects-enabled::before,
+      .mobile-effects-enabled::after {
+        content: '';
+        position: fixed;
+        inset: -18% -12%;
+        pointer-events: none;
+        z-index: -1;
+        opacity: 0.34;
+      }
+
+      .mobile-effects-enabled::before {
+        background: radial-gradient(circle at 18% 12%, rgba(56, 189, 248, 0.36), transparent 48%),
+                    radial-gradient(circle at 88% 80%, rgba(34, 197, 94, 0.3), transparent 50%);
+        filter: blur(18px);
+        animation: mobileAuraFloat 10s ease-in-out infinite !important;
+      }
+
+      .mobile-effects-enabled::after {
+        background: radial-gradient(circle at 72% 24%, rgba(59, 130, 246, 0.26), transparent 52%);
+        filter: blur(24px);
+        animation: mobileAuraFloat 13s ease-in-out infinite reverse !important;
+      }
+
+      .mobile-scroll-reveal {
+        opacity: 0;
+        transform: translateY(18px) scale(0.985);
+        transition: opacity 0.45s ease, transform 0.45s ease !important;
+      }
+
+      .mobile-scroll-reveal.in-view {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .mobile-touch-pop {
+        transform: translateZ(0);
+        transition: transform 0.15s ease, box-shadow 0.2s ease !important;
+      }
+
+      .mobile-touch-pop:active {
+        transform: scale(0.97);
+      }
+
+      .mobile-ripple-host {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mobile-ripple-effect {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        pointer-events: none;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.58), rgba(59, 130, 246, 0.2));
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.75;
+        animation: mobileRipple 0.52s ease-out forwards !important;
+      }
+    }
+
+    @keyframes mobileAuraFloat {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(0, -10px, 0) scale(1.03); }
+    }
+
+    @keyframes mobileRipple {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0.72;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(16);
+        opacity: 0;
+      }
+    }
+
+    /* Stitch rhythm tuning */
+    @media (max-width: 360px) {
+      .page {
+        padding: 10px 8px 24px;
+      }
+
+      .hero-main h1 {
+        font-size: clamp(22px, 8vw, 26px) !important;
+      }
+
+      .hero-sub {
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .smart-search-container {
+        margin-top: 22px;
+        padding: 12px;
+      }
+
+      .smart-search-input {
+        padding: 12px 13px;
+        font-size: 13px;
+      }
+
+      .recent-search-chip {
+        font-size: 11px;
+        padding: 5px 10px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 22px 22px 52px;
+      }
+
+      .hero-main h1 {
+        font-size: clamp(40px, 6vw, 64px);
+      }
+
+      .hero-sub {
+        max-width: 760px;
+        margin-inline: auto;
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .smart-search-container {
+        padding: 20px 22px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .page {
+        max-width: 1240px;
+      }
+
+      .hero-main {
+        margin-top: 14px;
+      }
+
+      .smart-search-container {
+        width: min(820px, 100%);
+      }
     }
   </style>
 </head>
@@ -1120,8 +1694,49 @@
           <div class="profile-modal-title">Your Profile</div>
           <button type="button" id="profileModalClose" class="profile-modal-close">X</button>
         </div>
+
+        <div class="profile-avatar-wrap">
+          <img id="profileAvatarPreview" class="profile-avatar-preview" alt="Profile photo" src="" />
+          <div class="profile-avatar-actions">
+            <button type="button" id="profilePhotoUploadBtn" class="profile-avatar-btn">Upload Photo</button>
+            <button type="button" id="profilePhotoEditBtn" class="profile-avatar-btn">Edit Crop</button>
+            <button type="button" id="profilePhotoRemoveBtn" class="profile-avatar-btn remove">Remove</button>
+            <input type="file" id="profilePhotoInput" accept="image/*" style="display:none;" />
+          </div>
+        </div>
+
+        <div id="profileCropPanel" class="profile-crop-panel" aria-live="polite">
+          <div class="profile-crop-title">Crop Photo</div>
+          <div class="profile-crop-canvas-wrap">
+            <canvas id="profileCropCanvas" class="profile-crop-canvas" width="220" height="220"></canvas>
+          </div>
+          <div class="profile-crop-controls">
+            <div class="profile-crop-row">
+              <label for="profileCropZoom">Zoom</label>
+              <input type="range" id="profileCropZoom" min="1" max="3" step="0.01" value="1.3" />
+            </div>
+            <div class="profile-crop-row">
+              <label for="profileCropX">Left/Right</label>
+              <input type="range" id="profileCropX" min="-100" max="100" step="1" value="0" />
+            </div>
+            <div class="profile-crop-row">
+              <label for="profileCropY">Up/Down</label>
+              <input type="range" id="profileCropY" min="-100" max="100" step="1" value="0" />
+            </div>
+          </div>
+          <div class="profile-avatar-actions" style="margin-top:10px;">
+            <button type="button" id="profileCropApplyBtn" class="profile-avatar-btn">Save Crop</button>
+            <button type="button" id="profileCropCancelBtn" class="profile-avatar-btn remove">Cancel</button>
+          </div>
+        </div>
+
         <div id="profileGrid" class="profile-grid"></div>
         <div class="profile-modal-actions">
+          <div class="profile-edit-actions">
+            <button type="button" id="profileEditBtn" class="profile-action-btn">Edit Profile</button>
+            <button type="button" id="profileSaveBtn" class="profile-action-btn save" style="display:none;">Save</button>
+            <button type="button" id="profileCancelBtn" class="profile-action-btn cancel" style="display:none;">Cancel</button>
+          </div>
           <button type="button" id="profileLogoutBtn" class="profile-logout-btn">Logout</button>
         </div>
       </div>
@@ -1201,24 +1816,28 @@
         <p class="hero-sub">Your one-stop hub for curated course notes, past papers, and quick references—built to keep you moving faster through every semester.</p>
         
         <!-- Quick Search on Home -->
-        <div style="margin-top: 30px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 20px; max-width: 600px;">
-          <input type="text" id="homeSearchInput" placeholder="Search by subject (e.g., DBMS, Physics, DSA...)" style="flex: 1; min-width: 200px; padding: 12px; border-radius: 8px; border: 1px solid rgba(96, 165, 250, 0.3); background: rgba(15, 23, 42, 0.8); color: #e5e7eb; font-size: 14px;">
-          <button id="homeSearchBtn" onclick="performHomeSearch()" style="padding: 12px 24px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Search Materials</button>
-        </div>
-
-        <!-- Popular Subjects -->
-        <div style="margin-top: 40px;">
-          <p style="color: #9ca3af; font-size: 14px; margin-bottom: 15px;">Or browse by subject:</p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
-            <a href="#" onclick="searchBySubject('DBMS'); return false;" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s ease; cursor: pointer;">DBMS</a>
-            <a href="#" onclick="searchBySubject('Physics'); return false;" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s ease; cursor: pointer;">Physics</a>
-            <a href="#" onclick="searchBySubject('DSA'); return false;" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s ease; cursor: pointer;">DSA</a>
-            <a href="#" onclick="searchBySubject('C++'); return false;" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s ease; cursor: pointer;">C++</a>
-            <a href="#" onclick="searchBySubject('Maths'); return false;" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s ease; cursor: pointer;">Mathematics</a>
-            <a href="#" onclick="searchBySubject('DE'); return false;" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s ease; cursor: pointer;">Digital Electronics</a>
-            <a href="materials.html" style="padding: 8px 16px; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 20px; color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.2s ease;">View All →</a>
+        <div class="smart-search-container">
+          <div class="smart-search-top">
+            <span class="smart-search-label">Smart Search</span>
+            <span class="smart-search-caption">Find notes by subject in one step</span>
+          </div>
+          <div class="search-row" id="homeSearchWrap">
+            <input type="text" id="homeSearchInput" class="smart-search-input" placeholder="Search by subject (e.g., DBMS, Physics, DSA...)" autocomplete="off" aria-label="Search subject">
+            <button id="homeSearchBtn" onclick="performHomeSearch()" class="smart-action-btn">Search Materials</button>
+          </div>
+          <div class="search-hint-row" aria-hidden="true">
+            <span class="search-hint-chip">Try: DBMS</span>
+            <span class="search-hint-chip">Operating System</span>
+            <span class="search-hint-chip">Java</span>
+            <span class="search-hint-chip">Data Science</span>
+          </div>
+          <div id="homeSearchSuggestions" class="home-search-suggestions hidden" role="listbox" aria-label="Search suggestions"></div>
+          <div id="recentSearchWrap" class="recent-search-wrap">
+            <p class="recent-search-title">Recent Searches</p>
+            <div id="recentSearchChips" class="recent-search-chips"></div>
           </div>
         </div>
+
       </div>
     </section>
 
@@ -1228,6 +1847,19 @@
     const AUTH_SESSION_KEY = 'authSession';
     const GOOGLE_SHEET_CONFIG_KEY = 'googleSheetApiUrl';
     const DEFAULT_GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyb6bFjDHX08ZQRWyF8G6VcKjHlzXS02dbf5Kn5XZELGGyN-91Og8CTxllsmD8QTA/exec';
+    const SEARCH_HISTORY_KEY = 'codexRecentSearches';
+    const HOME_SEARCH_POOL = ['DBMS', 'Physics', 'DSA', 'C++', 'Mathematics', 'Digital Electronics', 'Operating System', 'Computer Networks', 'Java', 'Python', 'Web Development', 'Data Science', 'Machine Learning', 'Compiler Design'];
+    const HOME_SEARCH_DEBOUNCE_MS = 120;
+    let activeSuggestionIndex = -1;
+    let recentSearchCache = null;
+
+    function debounce(func, wait = 100) {
+      let timeout;
+      return function debounced(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
 
     function getGoogleScriptUrl() {
       return (localStorage.getItem(GOOGLE_SHEET_CONFIG_KEY) || DEFAULT_GOOGLE_SCRIPT_URL).trim();
@@ -1289,9 +1921,99 @@
     }
 
     // ========== HOME PAGE SEARCH FUNCTION ==========
-    function performHomeSearch() {
-      const searchTerm = document.getElementById('homeSearchInput').value.trim();
+    function getRecentSearches() {
+      if (Array.isArray(recentSearchCache)) {
+        return [...recentSearchCache];
+      }
+
+      try {
+        const parsed = JSON.parse(localStorage.getItem(SEARCH_HISTORY_KEY) || '[]');
+        recentSearchCache = Array.isArray(parsed) ? parsed : [];
+        return [...recentSearchCache];
+      } catch (error) {
+        recentSearchCache = [];
+        return [];
+      }
+    }
+
+    function saveRecentSearch(searchTerm) {
+      const term = String(searchTerm || '').trim();
+      if (!term) {
+        return;
+      }
+
+      const existing = getRecentSearches().filter((item) => item.toLowerCase() !== term.toLowerCase());
+      const updated = [term, ...existing].slice(0, 8);
+      recentSearchCache = updated;
+      localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(updated));
+    }
+
+    function renderRecentSearchChips() {
+      const chipsWrap = document.getElementById('recentSearchChips');
+      const section = document.getElementById('recentSearchWrap');
+      if (!chipsWrap || !section) {
+        return;
+      }
+
+      const recent = getRecentSearches();
+      if (!recent.length) {
+        section.style.display = 'none';
+        chipsWrap.innerHTML = '';
+        return;
+      }
+
+      section.style.display = '';
+      chipsWrap.innerHTML = recent.map((item) => `<button type="button" class="recent-search-chip" data-term="${item.replace(/"/g, '&quot;')}">${item}</button>`).join('');
+
+      chipsWrap.querySelectorAll('.recent-search-chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const term = chip.dataset.term || '';
+          performHomeSearch(term);
+        });
+      });
+    }
+
+    function hideHomeSuggestions() {
+      const suggestions = document.getElementById('homeSearchSuggestions');
+      if (!suggestions) {
+        return;
+      }
+      suggestions.classList.add('hidden');
+      suggestions.innerHTML = '';
+      activeSuggestionIndex = -1;
+    }
+
+    function getHomeSuggestions(query) {
+      const normalized = String(query || '').trim().toLowerCase();
+      const pool = [...new Set([...getRecentSearches(), ...HOME_SEARCH_POOL])];
+      if (!normalized) {
+        return pool.slice(0, 6);
+      }
+      return pool.filter((item) => item.toLowerCase().includes(normalized)).slice(0, 8);
+    }
+
+    function renderHomeSuggestions(query) {
+      const suggestions = document.getElementById('homeSearchSuggestions');
+      if (!suggestions) {
+        return;
+      }
+
+      const results = getHomeSuggestions(query);
+      if (!results.length) {
+        hideHomeSuggestions();
+        return;
+      }
+
+      suggestions.innerHTML = results.map((item, index) => `<button type="button" class="home-search-suggestion-item${index === activeSuggestionIndex ? ' active' : ''}" data-index="${index}" data-value="${item.replace(/"/g, '&quot;')}">${item}</button>`).join('');
+      suggestions.classList.remove('hidden');
+    }
+
+    function performHomeSearch(forcedTerm) {
+      const input = document.getElementById('homeSearchInput');
+      const searchTerm = String(forcedTerm || (input ? input.value : '')).trim();
       if (searchTerm) {
+        saveRecentSearch(searchTerm);
+        renderRecentSearchChips();
         // Store search term in sessionStorage
         sessionStorage.setItem('searchQuery', searchTerm);
         // Redirect to materials page
@@ -1301,21 +2023,181 @@
     
     // Search by subject from quick links
     function searchBySubject(subject) {
+      saveRecentSearch(subject);
       sessionStorage.setItem('searchQuery', subject);
       window.location.href = 'materials.html';
+    }
+
+    function prefetchMaterialsPage() {
+      if (document.querySelector('link[data-prefetch="materials"]')) {
+        return;
+      }
+
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = 'materials.html';
+      link.as = 'document';
+      link.dataset.prefetch = 'materials';
+      document.head.appendChild(link);
+    }
+
+    function initSmartphoneEffects() {
+      if (document.documentElement.dataset.mobileFxInitialized === '1') {
+        return;
+      }
+
+      const isPhoneViewport = window.matchMedia('(max-width: 768px)').matches;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!isPhoneViewport || reduceMotion) {
+        return;
+      }
+
+      document.documentElement.dataset.mobileFxInitialized = '1';
+      document.body.classList.add('mobile-effects-enabled');
+
+      const popTargets = document.querySelectorAll('.nav-pill, #homeSearchBtn, #uploadChooseFileBtn, #uploadSubmitBtn, #uploadCancelBtn, #profileNavBtn, #uploadForAdminBtn');
+      popTargets.forEach((el) => {
+        el.classList.add('mobile-touch-pop', 'mobile-ripple-host');
+      });
+
+      const revealTargets = document.querySelectorAll('header, .hero-main h1, .hero-sub, .hero-main > div, footer');
+      revealTargets.forEach((el, index) => {
+        el.classList.add('mobile-scroll-reveal');
+        el.style.transitionDelay = `${Math.min(index * 55, 260)}ms`;
+      });
+
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        root: null,
+        threshold: 0.15,
+        rootMargin: '0px 0px -30px 0px'
+      });
+
+      revealTargets.forEach((el) => revealObserver.observe(el));
+
+      const addRipple = (event) => {
+        const host = event.currentTarget;
+        const rect = host.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.className = 'mobile-ripple-effect';
+        ripple.style.left = `${event.clientX - rect.left}px`;
+        ripple.style.top = `${event.clientY - rect.top}px`;
+        host.appendChild(ripple);
+        ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
+      };
+
+      popTargets.forEach((el) => {
+        el.addEventListener('pointerdown', addRipple, { passive: true });
+      });
     }
     
     // Allow pressing Enter in search input
     document.addEventListener('DOMContentLoaded', () => {
       applyAuthButtonVisibility();
+      initSmartphoneEffects();
 
       const homeSearchInput = document.getElementById('homeSearchInput');
+      const homeSearchSuggestions = document.getElementById('homeSearchSuggestions');
       if (homeSearchInput) {
+        renderRecentSearchChips();
+
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(prefetchMaterialsPage, { timeout: 1500 });
+        } else {
+          setTimeout(prefetchMaterialsPage, 250);
+        }
+
+        const debouncedSuggest = debounce((value) => {
+          activeSuggestionIndex = -1;
+          renderHomeSuggestions(value);
+        }, HOME_SEARCH_DEBOUNCE_MS);
+
         homeSearchInput.addEventListener('keypress', (e) => {
           if (e.key === 'Enter') {
             performHomeSearch();
           }
         });
+
+        homeSearchInput.addEventListener('input', () => {
+          debouncedSuggest(homeSearchInput.value);
+        });
+
+        homeSearchInput.addEventListener('focus', () => {
+          renderHomeSuggestions(homeSearchInput.value);
+        });
+
+        homeSearchInput.addEventListener('keydown', (event) => {
+          const suggestions = getHomeSuggestions(homeSearchInput.value);
+          if (!suggestions.length) {
+            return;
+          }
+
+          if (event.key === 'ArrowDown') {
+            event.preventDefault();
+            activeSuggestionIndex = (activeSuggestionIndex + 1) % suggestions.length;
+            renderHomeSuggestions(homeSearchInput.value);
+            return;
+          }
+
+          if (event.key === 'ArrowUp') {
+            event.preventDefault();
+            activeSuggestionIndex = activeSuggestionIndex <= 0 ? suggestions.length - 1 : activeSuggestionIndex - 1;
+            renderHomeSuggestions(homeSearchInput.value);
+            return;
+          }
+
+          if (event.key === 'Enter' && activeSuggestionIndex >= 0 && suggestions[activeSuggestionIndex]) {
+            event.preventDefault();
+            performHomeSearch(suggestions[activeSuggestionIndex]);
+          }
+
+          if (event.key === 'Escape') {
+            hideHomeSuggestions();
+          }
+        });
+
+        document.addEventListener('click', (event) => {
+          const wrap = document.getElementById('homeSearchWrap');
+          const suggestions = document.getElementById('homeSearchSuggestions');
+          if (!wrap || !suggestions) {
+            return;
+          }
+          if (!wrap.contains(event.target) && !suggestions.contains(event.target)) {
+            hideHomeSuggestions();
+          }
+        });
+
+        if (homeSearchSuggestions) {
+          homeSearchSuggestions.addEventListener('mouseover', (event) => {
+            const target = event.target.closest('.home-search-suggestion-item');
+            if (!target) {
+              return;
+            }
+            const nextIndex = Number(target.dataset.index);
+            if (Number.isNaN(nextIndex)) {
+              return;
+            }
+            activeSuggestionIndex = nextIndex;
+            homeSearchSuggestions.querySelectorAll('.home-search-suggestion-item').forEach((item, idx) => {
+              item.classList.toggle('active', idx === activeSuggestionIndex);
+            });
+          });
+
+          homeSearchSuggestions.addEventListener('click', (event) => {
+            const target = event.target.closest('.home-search-suggestion-item');
+            if (!target) {
+              return;
+            }
+            performHomeSearch(target.dataset.value || '');
+          });
+        }
       }
 
       const profileNavBtn = document.getElementById('profileNavBtn');
@@ -1325,6 +2207,21 @@
       const profileModalClose = document.getElementById('profileModalClose');
       const profileGrid = document.getElementById('profileGrid');
       const profileLogoutBtn = document.getElementById('profileLogoutBtn');
+      const profileEditBtn = document.getElementById('profileEditBtn');
+      const profileSaveBtn = document.getElementById('profileSaveBtn');
+      const profileCancelBtn = document.getElementById('profileCancelBtn');
+      const profileAvatarPreview = document.getElementById('profileAvatarPreview');
+      const profilePhotoUploadBtn = document.getElementById('profilePhotoUploadBtn');
+      const profilePhotoEditBtn = document.getElementById('profilePhotoEditBtn');
+      const profilePhotoRemoveBtn = document.getElementById('profilePhotoRemoveBtn');
+      const profilePhotoInput = document.getElementById('profilePhotoInput');
+      const profileCropPanel = document.getElementById('profileCropPanel');
+      const profileCropCanvas = document.getElementById('profileCropCanvas');
+      const profileCropZoom = document.getElementById('profileCropZoom');
+      const profileCropX = document.getElementById('profileCropX');
+      const profileCropY = document.getElementById('profileCropY');
+      const profileCropApplyBtn = document.getElementById('profileCropApplyBtn');
+      const profileCropCancelBtn = document.getElementById('profileCropCancelBtn');
       const uploadModal = document.getElementById('uploadModal');
       const uploadModalClose = document.getElementById('uploadModalClose');
       const uploadFormalitiesForm = document.getElementById('uploadFormalitiesForm');
@@ -1340,6 +2237,107 @@
       const uploadSubmitBtn = document.getElementById('uploadSubmitBtn');
 
       let selectedUploadFile = null;
+      let profileCropImage = null;
+      let profileEditMode = false;
+      let profileEditSnapshot = null;
+
+      function escapeAttr(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/"/g, '&quot;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+      }
+
+      function normalizeLower(value) {
+        return String(value || '').trim().toLowerCase();
+      }
+
+      function getDefaultAvatarDataUrl() {
+        const data = getProfileData();
+        const seed = String(data['Full Name'] || data['Username'] || 'U').trim();
+        const initial = (seed && seed[0] ? seed[0] : 'U').toUpperCase();
+        return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"><rect width="240" height="240" fill="%231e293b"/><text x="50%" y="53%" dominant-baseline="middle" text-anchor="middle" font-size="96" font-family="Segoe UI, Arial, sans-serif" fill="%2394a3b8">${initial}</text></svg>`;
+      }
+
+      function setProfileAvatarPreview(imageUrl) {
+        if (!profileAvatarPreview) {
+          return;
+        }
+        profileAvatarPreview.src = imageUrl || getDefaultAvatarDataUrl();
+      }
+
+      function loadSavedProfilePhoto() {
+        const savedImage = localStorage.getItem('profileImage');
+        setProfileAvatarPreview(savedImage);
+      }
+
+      function renderProfileCropPreview() {
+        if (!profileCropCanvas || !profileCropImage) {
+          return;
+        }
+
+        const ctx = profileCropCanvas.getContext('2d');
+        const size = profileCropCanvas.width;
+        ctx.clearRect(0, 0, size, size);
+
+        const zoom = Number(profileCropZoom.value || 1.3);
+        const xOffset = Number(profileCropX.value || 0);
+        const yOffset = Number(profileCropY.value || 0);
+
+        const baseScale = Math.max(size / profileCropImage.width, size / profileCropImage.height);
+        const drawWidth = profileCropImage.width * baseScale * zoom;
+        const drawHeight = profileCropImage.height * baseScale * zoom;
+        const drawX = (size - drawWidth) / 2 + xOffset;
+        const drawY = (size - drawHeight) / 2 + yOffset;
+
+        ctx.drawImage(profileCropImage, drawX, drawY, drawWidth, drawHeight);
+      }
+
+      function hideProfileCropPanel() {
+        if (!profileCropPanel) {
+          return;
+        }
+        profileCropPanel.classList.remove('show');
+      }
+
+      function showProfileCropPanel() {
+        if (!profileCropPanel) {
+          return;
+        }
+        profileCropPanel.classList.add('show');
+      }
+
+      function openCropEditorFromSource(imageSrc) {
+        if (!imageSrc) {
+          alert('Please upload a photo first.');
+          return;
+        }
+
+        const image = new Image();
+        image.onload = () => {
+          profileCropImage = image;
+          profileCropZoom.value = '1.3';
+          profileCropX.value = '0';
+          profileCropY.value = '0';
+          showProfileCropPanel();
+          renderProfileCropPreview();
+        };
+        image.onerror = () => {
+          alert('Could not load image for cropping. Please try another photo.');
+        };
+        image.src = imageSrc;
+      }
+
+      function applyCroppedProfilePhoto() {
+        if (!profileCropCanvas) {
+          return;
+        }
+        const croppedDataUrl = profileCropCanvas.toDataURL('image/png', 0.95);
+        localStorage.setItem('profileImage', croppedDataUrl);
+        setProfileAvatarPreview(croppedDataUrl);
+        hideProfileCropPanel();
+      }
 
       function formatFileSize(bytes) {
         if (!bytes || bytes < 1024) return `${bytes || 0} B`;
@@ -1461,7 +2459,10 @@
           'Department': studentProfile.department || currentUser.department || matchedUser.department || '-',
           'Semester': studentProfile.semester || currentUser.semester || matchedUser.semester || '-',
           'College ID No': studentProfile.collegeIdNo || matchedUser.collegeIdNo || '-',
-          'College': studentProfile.college || matchedUser.college || '-'
+          'College': studentProfile.college || matchedUser.college || '-',
+          'Mobile No': studentProfile.mobileNo || currentUser.mobileNo || matchedUser.mobileNo || '-',
+          'Gender': studentProfile.gender || currentUser.gender || matchedUser.gender || '-',
+          'Permanent Address': studentProfile.permanentAddress || matchedUser.permanentAddress || '-'
         };
       }
 
@@ -1471,6 +2472,29 @@
           name: identity.fullName || identity.username || 'Student',
           email: identity.email || 'student@local.user'
         };
+      }
+
+      function getEditableProfileModel() {
+        const data = getProfileData();
+        return {
+          fullName: data['Full Name'] === '-' ? '' : String(data['Full Name'] || ''),
+          username: data['Username'] === '-' ? '' : String(data['Username'] || ''),
+          email: data['Email'] === '-' ? '' : String(data['Email'] || ''),
+          department: data['Department'] === '-' ? '' : String(data['Department'] || ''),
+          semester: data['Semester'] === '-' ? '' : String(data['Semester'] || ''),
+          collegeIdNo: data['College ID No'] === '-' ? '' : String(data['College ID No'] || ''),
+          college: data['College'] === '-' ? '' : String(data['College'] || ''),
+          mobileNo: data['Mobile No'] === '-' ? '' : String(data['Mobile No'] || ''),
+          gender: data['Gender'] === '-' ? '' : String(data['Gender'] || ''),
+          permanentAddress: data['Permanent Address'] === '-' ? '' : String(data['Permanent Address'] || '')
+        };
+      }
+
+      function setProfileEditButtonsState(isEditing) {
+        profileEditMode = isEditing;
+        if (profileEditBtn) profileEditBtn.style.display = isEditing ? 'none' : '';
+        if (profileSaveBtn) profileSaveBtn.style.display = isEditing ? '' : 'none';
+        if (profileCancelBtn) profileCancelBtn.style.display = isEditing ? '' : 'none';
       }
 
       function resetUploadModalState() {
@@ -1495,15 +2519,66 @@
 
       function renderProfileDetails() {
         const data = getProfileData();
-        profileGrid.innerHTML = Object.entries(data).map(([label, value]) => {
-          const fullClass = (label === 'Email' || label === 'College') ? 'full' : '';
-          return `
-            <div class="profile-item ${fullClass}">
-              <span class="profile-item-label">${label}</span>
-              <span class="profile-item-value">${value}</span>
+
+        if (!profileEditMode) {
+          profileGrid.innerHTML = Object.entries(data).map(([label, value]) => {
+            const fullClass = (label === 'Email' || label === 'College' || label === 'Permanent Address') ? 'full' : '';
+            return `
+              <div class="profile-item ${fullClass}">
+                <span class="profile-item-label">${label}</span>
+                <span class="profile-item-value">${value}</span>
+              </div>
+            `;
+          }).join('');
+        } else {
+          const model = profileEditSnapshot || getEditableProfileModel();
+          profileGrid.innerHTML = `
+            <div class="profile-item">
+              <span class="profile-item-label">Full Name</span>
+              <input id="profileFieldFullName" class="profile-item-input" type="text" value="${escapeAttr(model.fullName)}" />
+            </div>
+            <div class="profile-item">
+              <span class="profile-item-label">Username</span>
+              <input id="profileFieldUsername" class="profile-item-input" type="text" value="${escapeAttr(model.username)}" />
+            </div>
+            <div class="profile-item full">
+              <span class="profile-item-label">Email</span>
+              <input id="profileFieldEmail" class="profile-item-input" type="text" value="${escapeAttr(model.email)}" readonly />
+            </div>
+            <div class="profile-item">
+              <span class="profile-item-label">Department</span>
+              <input id="profileFieldDepartment" class="profile-item-input" type="text" value="${escapeAttr(model.department)}" />
+            </div>
+            <div class="profile-item">
+              <span class="profile-item-label">Semester</span>
+              <input id="profileFieldSemester" class="profile-item-input" type="text" value="${escapeAttr(model.semester)}" />
+            </div>
+            <div class="profile-item">
+              <span class="profile-item-label">College ID No</span>
+              <input id="profileFieldCollegeIdNo" class="profile-item-input" type="text" value="${escapeAttr(model.collegeIdNo)}" />
+            </div>
+            <div class="profile-item full">
+              <span class="profile-item-label">College</span>
+              <input id="profileFieldCollege" class="profile-item-input" type="text" value="${escapeAttr(model.college)}" />
+            </div>
+            <div class="profile-item">
+              <span class="profile-item-label">Mobile No</span>
+              <input id="profileFieldMobileNo" class="profile-item-input" type="tel" value="${escapeAttr(model.mobileNo)}" />
+            </div>
+            <div class="profile-item">
+              <span class="profile-item-label">Gender</span>
+              <input id="profileFieldGender" class="profile-item-input" type="text" value="${escapeAttr(model.gender)}" />
+            </div>
+            <div class="profile-item full">
+              <span class="profile-item-label">Permanent Address</span>
+              <input id="profileFieldPermanentAddress" class="profile-item-input" type="text" value="${escapeAttr(model.permanentAddress)}" />
             </div>
           `;
-        }).join('');
+        }
+
+        loadSavedProfilePhoto();
+        hideProfileCropPanel();
+        setProfileEditButtonsState(profileEditMode);
       }
 
       if (profileNavBtn) {
@@ -1515,6 +2590,8 @@
 
       if (profileModalClose) {
         profileModalClose.addEventListener('click', () => {
+          profileEditSnapshot = null;
+          setProfileEditButtonsState(false);
           profileModal.classList.remove('show');
         });
       }
@@ -1522,8 +2599,178 @@
       if (profileModal) {
         profileModal.addEventListener('click', (event) => {
           if (event.target === profileModal) {
+            profileEditSnapshot = null;
+            setProfileEditButtonsState(false);
             profileModal.classList.remove('show');
+            hideProfileCropPanel();
           }
+        });
+      }
+
+      if (profileEditBtn) {
+        profileEditBtn.addEventListener('click', () => {
+          profileEditSnapshot = getEditableProfileModel();
+          setProfileEditButtonsState(true);
+          renderProfileDetails();
+        });
+      }
+
+      if (profileCancelBtn) {
+        profileCancelBtn.addEventListener('click', () => {
+          profileEditSnapshot = null;
+          setProfileEditButtonsState(false);
+          renderProfileDetails();
+        });
+      }
+
+      if (profileSaveBtn) {
+        profileSaveBtn.addEventListener('click', () => {
+          const fullName = String((document.getElementById('profileFieldFullName') || {}).value || '').trim();
+          const username = String((document.getElementById('profileFieldUsername') || {}).value || '').trim();
+          const email = String((document.getElementById('profileFieldEmail') || {}).value || '').trim().toLowerCase();
+          const department = String((document.getElementById('profileFieldDepartment') || {}).value || '').trim();
+          const semester = String((document.getElementById('profileFieldSemester') || {}).value || '').trim();
+          const collegeIdNo = String((document.getElementById('profileFieldCollegeIdNo') || {}).value || '').trim();
+          const college = String((document.getElementById('profileFieldCollege') || {}).value || '').trim();
+          const mobileNo = String((document.getElementById('profileFieldMobileNo') || {}).value || '').trim();
+          const gender = String((document.getElementById('profileFieldGender') || {}).value || '').trim();
+          const permanentAddress = String((document.getElementById('profileFieldPermanentAddress') || {}).value || '').trim();
+
+          if (!fullName || !username) {
+            alert('Full Name and Username are required.');
+            return;
+          }
+
+          const studentProfile = JSON.parse(localStorage.getItem('studentProfile') || '{}');
+          const updatedProfile = {
+            ...studentProfile,
+            fullName,
+            username,
+            email,
+            department,
+            semester,
+            collegeIdNo,
+            college,
+            mobileNo,
+            gender,
+            permanentAddress
+          };
+          localStorage.setItem('studentProfile', JSON.stringify(updatedProfile));
+
+          const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+          if (currentUser && Object.keys(currentUser).length) {
+            localStorage.setItem('currentUser', JSON.stringify({
+              ...currentUser,
+              fullName,
+              username,
+              email: email || currentUser.email,
+              department,
+              semester,
+              mobileNo,
+              gender
+            }));
+          }
+
+          const users = JSON.parse(localStorage.getItem('users') || '[]');
+          const prevEmail = normalizeLower((profileEditSnapshot || {}).email);
+          const prevUsername = normalizeLower((profileEditSnapshot || {}).username);
+          const userIndex = users.findIndex((u) => {
+            const itemEmail = normalizeLower(u.email);
+            const itemUsername = normalizeLower(u.username);
+            return (prevEmail && itemEmail === prevEmail) || (prevUsername && itemUsername === prevUsername);
+          });
+
+          if (userIndex >= 0) {
+            const nameParts = fullName.split(/\s+/).filter(Boolean);
+            const firstName = nameParts.shift() || '';
+            const lastName = nameParts.join(' ');
+
+            users[userIndex] = {
+              ...users[userIndex],
+              firstName,
+              lastName,
+              username,
+              email: email || users[userIndex].email,
+              department,
+              semester,
+              collegeIdNo,
+              college,
+              mobileNo,
+              gender,
+              permanentAddress
+            };
+            localStorage.setItem('users', JSON.stringify(users));
+          }
+
+          profileEditSnapshot = null;
+          setProfileEditButtonsState(false);
+          renderProfileDetails();
+          alert('Profile updated successfully.');
+        });
+      }
+
+      if (profilePhotoUploadBtn && profilePhotoInput) {
+        profilePhotoUploadBtn.addEventListener('click', () => {
+          profilePhotoInput.click();
+        });
+
+        profilePhotoInput.addEventListener('change', () => {
+          const file = profilePhotoInput.files && profilePhotoInput.files[0];
+          if (!file) {
+            return;
+          }
+
+          if (!file.type.startsWith('image/')) {
+            alert('Please choose an image file.');
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = () => {
+            const imageSrc = String(reader.result || '');
+            openCropEditorFromSource(imageSrc);
+          };
+          reader.onerror = () => {
+            alert('Unable to read selected image. Please try again.');
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      if (profilePhotoEditBtn) {
+        profilePhotoEditBtn.addEventListener('click', () => {
+          const savedImage = localStorage.getItem('profileImage') || '';
+          openCropEditorFromSource(savedImage);
+        });
+      }
+
+      if (profilePhotoRemoveBtn) {
+        profilePhotoRemoveBtn.addEventListener('click', () => {
+          localStorage.removeItem('profileImage');
+          setProfileAvatarPreview('');
+          hideProfileCropPanel();
+          profileCropImage = null;
+        });
+      }
+
+      [profileCropZoom, profileCropX, profileCropY].forEach((control) => {
+        if (!control) {
+          return;
+        }
+        control.addEventListener('input', () => {
+          renderProfileCropPreview();
+        });
+      });
+
+      if (profileCropApplyBtn) {
+        profileCropApplyBtn.addEventListener('click', () => {
+          applyCroppedProfilePhoto();
+        });
+      }
+
+      if (profileCropCancelBtn) {
+        profileCropCancelBtn.addEventListener('click', () => {
+          hideProfileCropPanel();
         });
       }
 
@@ -1760,7 +3007,8 @@
 
         // Update viewport settings based on device
         if (this.isMobile) {
-          document.body.style.overscrollBehavior = 'contain';
+          document.body.style.overscrollBehaviorY = 'auto';
+          document.body.style.webkitOverflowScrolling = 'touch';
         }
       }
 
@@ -1787,12 +3035,7 @@
           }, 250);
         });
 
-        // Handle viewport meta tag updates for iOS
-        if (this.os === 'iOS') {
-          document.addEventListener('gesturestart', (e) => {
-            e.preventDefault();
-          });
-        }
+        // Keep native iOS gestures enabled to avoid blocking scroll.
       }
 
       // Log device information to console
@@ -1985,9 +3228,10 @@
         scroll-behavior: smooth;
       }
 
-      /* Prevent layout shifts on scroll */
-      html {
-        overflow-y: scroll;
+      /* Keep native page scrolling behavior */
+      html,
+      body {
+        overflow-y: auto;
       }
 
       /* ========== REDUCE MOTION SUPPORT ========== */

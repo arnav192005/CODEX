@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Admin Dashboard - User Data</title>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-light: #111827;
+      --site-bg-1: #061225;
+      --site-bg-2: #0b1f3f;
+      --site-bg-3: #123a63;
+      --site-glow-a: rgba(46, 127, 255, 0.22);
+      --site-glow-b: rgba(16, 185, 255, 0.16);
+      --primary: #3b82f6;
+      --accent: #22c55e;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background:
+        radial-gradient(900px 500px at 12% 10%, var(--site-glow-a), transparent 60%),
+        radial-gradient(800px 420px at 88% 85%, var(--site-glow-b), transparent 60%),
+        linear-gradient(145deg, var(--site-bg-1) 0%, var(--site-bg-2) 45%, var(--site-bg-3) 100%);
+      color: var(--text);
+      padding: 0;
+      display: block;
+      width: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      min-height: 100dvh;
+      -webkit-overflow-scrolling: touch;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      inset: -15% -10%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.55;
+      will-change: transform, opacity;
+    }
+
+    body::before {
+      background:
+        radial-gradient(40% 30% at 20% 22%, rgba(56, 189, 248, 0.22), transparent 72%),
+        radial-gradient(38% 32% at 78% 74%, rgba(59, 130, 246, 0.2), transparent 72%);
+      animation: auroraDrift 18s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      background:
+        radial-gradient(34% 28% at 70% 25%, rgba(96, 165, 250, 0.2), transparent 74%),
+        radial-gradient(36% 30% at 28% 80%, rgba(37, 99, 235, 0.2), transparent 74%);
+      animation: auroraDriftReverse 24s ease-in-out infinite alternate;
+      opacity: 0.45;
+    }
+
+    @keyframes auroraDrift {
+      0% {
+        transform: translate3d(-2%, -1%, 0) scale(1);
+      }
+      50% {
+        transform: translate3d(2%, 1.5%, 0) scale(1.06);
+      }
+      100% {
+        transform: translate3d(0.5%, 3%, 0) scale(1.02);
+      }
+    }
+
+    @keyframes auroraDriftReverse {
+      0% {
+        transform: translate3d(1%, 2%, 0) scale(1.02);
+      }
+      50% {
+        transform: translate3d(-2.5%, -1.5%, 0) scale(1.08);
+      }
+      100% {
+        transform: translate3d(-0.5%, 1%, 0) scale(1.03);
+      }
+    }
+
+    .container {
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+
+    .header {
+      background:
+        radial-gradient(140% 120% at 8% -20%, rgba(59, 130, 246, 0.2), transparent 55%),
+        linear-gradient(135deg, rgba(8, 16, 34, 0.86), rgba(9, 22, 48, 0.82));
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 20px 44px rgba(2, 6, 23, 0.42), inset 0 1px 0 rgba(147, 197, 253, 0.14);
+    }
+
+    .header h1 {
+      font-size: 32px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stats {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 22px rgba(2, 6, 23, 0.35);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      color: white;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--accent), #16a34a);
+      color: white;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #06b6d4, #0284c7);
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    .filters {
+      background: rgba(8, 17, 37, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filters input, .filters select {
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 8px;
+      color: #b0b8c4;
+      font-size: 14px;
+    }
+
+    .filters select option {
+      background: #1a1f2e;
+      color: #b0b8c4;
+    }
+
+    .filters input:focus, .filters select:focus {
+      outline: none;
+      border-color: rgba(139, 92, 246, 0.6);
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .table-container {
+      background: rgba(8, 17, 37, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 16px 36px rgba(2, 6, 23, 0.34), inset 0 1px 0 rgba(147, 197, 253, 0.12);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: rgba(139, 92, 246, 0.2);
+    }
+
+    th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 13px;
+    }
+
+    tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background: rgba(139, 92, 246, 0.1);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .badge-cse { background: rgba(59, 130, 246, 0.3); color: #60a5fa; }
+    .badge-ece { background: rgba(139, 92, 246, 0.3); color: #a78bfa; }
+    .badge-me { background: rgba(251, 146, 60, 0.3); color: #fb923c; }
+    .badge-ce { background: rgba(34, 197, 94, 0.3); color: #4ade80; }
+    .badge-ee { background: rgba(234, 179, 8, 0.3); color: #facc15; }
+    .badge-it { background: rgba(236, 72, 153, 0.3); color: #f472b6; }
+
+    .delete-btn {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+      color: #fca5a5;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .delete-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+      transform: scale(1.05);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .data-status {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .script-status {
+      margin-top: 8px;
+      font-size: 12px;
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    .script-status.checking {
+      color: #cbd5e1;
+      background: rgba(148, 163, 184, 0.16);
+      border-color: rgba(148, 163, 184, 0.35);
+    }
+
+    .script-status.new {
+      color: #86efac;
+      background: rgba(34, 197, 94, 0.16);
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    .script-status.old {
+      color: #fecaca;
+      background: rgba(239, 68, 68, 0.16);
+      border-color: rgba(239, 68, 68, 0.45);
+    }
+
+    .script-status.unknown {
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.16);
+      border-color: rgba(245, 158, 11, 0.45);
+    }
+
+    .uploads-panel {
+      width: 100%;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .uploads-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: rgba(59, 130, 246, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-weight: 600;
+    }
+
+    .uploads-count {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .stats {
+        width: 100%;
+        justify-content: space-around;
+      }
+
+      .table-container {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 800px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body::before,
+      body::after {
+        animation: none;
+      }
+
+      .btn,
+      .delete-btn,
+      tbody tr {
+        transition: none;
+      }
+    }
+
+    /* Stitch rhythm tuning */
+    @media (max-width: 360px) {
+      .container {
+        padding: 12px;
+      }
+
+      .header {
+        padding: 18px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+
+      .btn {
+        padding: 10px 14px;
+        font-size: 12px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        padding: 24px;
+      }
+
+      .header h1 {
+        font-size: 34px;
+      }
+
+      .table-container {
+        border-radius: 14px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .container {
+        max-width: 1500px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Back to Home Link -->
+  <div style="position: fixed; top: 20px; left: 20px; z-index: 1000;">
+    <a href="index.html" style="color: rgba(255,255,255,0.7); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 5px; padding: 8px 16px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='rgba(255,255,255,0.7)';">
+      ← Back to Home
+    </a>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>📊 User Dashboard</h1>
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-value" id="totalUsers">0</div>
+            <div class="stat-label">Total Users</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="todayUsers">0</div>
+            <div class="stat-label">Today</div>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-info" onclick="setGoogleSheetLink()">
+          🔗 Connect Sheet
+        </button>
+        <button class="btn btn-primary" onclick="syncGoogleSheetNow()">
+          🔄 Sync Sheet
+        </button>
+        <button class="btn btn-info" onclick="migrateSheetPasswordsNow()">
+          🔐 Migrate Passwords
+        </button>
+        <button class="btn btn-success" onclick="exportToCSV()">
+          📥 Export CSV
+        </button>
+        <button class="btn btn-primary" onclick="exportToExcel()">
+          📊 Export Excel
+        </button>
+        <button class="btn btn-danger" onclick="clearAllData()">
+          🗑️ Clear All
+        </button>
+      </div>
+      <div id="dataSourceStatus" class="data-status">Source: Local Storage</div>
+      <div id="scriptVersionStatus" class="script-status checking">Script version: Checking...</div>
+    </div>
+
+    <div class="filters">
+      <input type="text" id="searchInput" placeholder="🔍 Search by name or email..." style="flex: 1; min-width: 250px;">
+      <select id="departmentFilter">
+        <option value="">All Departments</option>
+        <option value="CSE">Computer Science</option>
+        <option value="ECE">Electronics & Communication</option>
+        <option value="ME">Mechanical</option>
+        <option value="CE">Civil</option>
+        <option value="EE">Electrical</option>
+        <option value="IT">Information Technology</option>
+      </select>
+      <select id="semesterFilter">
+        <option value="">All Semesters</option>
+        <option value="1">1st Semester</option>
+        <option value="2">2nd Semester</option>
+        <option value="3">3rd Semester</option>
+        <option value="4">4th Semester</option>
+        <option value="5">5th Semester</option>
+        <option value="6">6th Semester</option>
+        <option value="7">7th Semester</option>
+        <option value="8">8th Semester</option>
+      </select>
+      <button class="btn btn-primary" onclick="applyFilters()">Apply Filters</button>
+    </div>
+
+    <div class="table-container">
+      <table id="usersTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Semester</th>
+            <th>College ID</th>
+            <th>College</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Data will be populated here -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="uploads-panel">
+      <div class="uploads-header">
+        <span>📎 Uploaded Files To Administrator</span>
+        <span id="uploadedFilesCount" class="uploads-count">0 files</span>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>File Name</th>
+              <th>Type</th>
+              <th>Size</th>
+              <th>Uploaded By</th>
+              <th>Uploaded At</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="uploadedFilesBody">
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <div class="empty-state-icon">📁</div>
+                  <h3>No uploaded files yet</h3>
+                  <p>Files uploaded by students will appear here</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let allUsers = [];
+    let allUploadedFiles = [];
+    const AUTH_SESSION_KEY = 'authSession';
+    const GOOGLE_SHEET_CONFIG_KEY = 'googleSheetApiUrl';
+    const DEFAULT_GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyb6bFjDHX08ZQRWyF8G6VcKjHlzXS02dbf5Kn5XZELGGyN-91Og8CTxllsmD8QTA/exec';
+    const SCRIPT_VERSION_STATUS_TTL_MS = 2 * 60 * 1000;
+    let googleSheetApiUrl = (localStorage.getItem(GOOGLE_SHEET_CONFIG_KEY) || DEFAULT_GOOGLE_SHEET_URL).trim();
+    let scriptVersionStatusCache = {
+      checkedAt: 0,
+      status: 'checking',
+      text: 'Script version: Checking...'
+    };
+
+    if (!localStorage.getItem(GOOGLE_SHEET_CONFIG_KEY) && DEFAULT_GOOGLE_SHEET_URL) {
+      localStorage.setItem(GOOGLE_SHEET_CONFIG_KEY, DEFAULT_GOOGLE_SHEET_URL);
+    }
+
+    // Admin-only access control
+    const ADMIN_EMAILS = ['arnavpanwala@gmail.com'];
+    const ADMIN_USERNAMES = ['arnav', 'arnavpanwala', 'admin'];
+
+    function clearAuthSession() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem(AUTH_SESSION_KEY);
+      localStorage.removeItem('rememberedEmail');
+    }
+
+    function getValidCurrentUser() {
+      const currentUserRaw = localStorage.getItem('currentUser');
+      const authSessionRaw = localStorage.getItem(AUTH_SESSION_KEY);
+
+      if (!currentUserRaw || !authSessionRaw) {
+        return null;
+      }
+
+      try {
+        const currentUser = JSON.parse(currentUserRaw);
+        const authSession = JSON.parse(authSessionRaw);
+        const expiresAt = Number(authSession.expiresAt || 0);
+
+        if (!expiresAt || Date.now() > expiresAt) {
+          clearAuthSession();
+          return null;
+        }
+
+        return currentUser;
+      } catch (error) {
+        clearAuthSession();
+        return null;
+      }
+    }
+
+    function isAdminUser() {
+      const currentUser = getValidCurrentUser() || {};
+      const userEmail = (currentUser.email || '').toLowerCase();
+      const userName = (currentUser.username || '').toLowerCase();
+
+      return ADMIN_EMAILS.includes(userEmail) || ADMIN_USERNAMES.includes(userName);
+    }
+
+    function enforceAdminAccess() {
+      if (isAdminUser()) {
+        return true;
+      }
+
+      document.body.innerHTML = `
+        <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#000;color:#e5e7eb;">
+          <div style="max-width:560px;width:100%;text-align:center;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.35);border-radius:14px;padding:28px;">
+            <h2 style="margin-bottom:10px;color:#fca5a5;">Access Denied</h2>
+            <p style="margin-bottom:16px;color:#cbd5e1;">This dashboard is only visible to the administrator.</p>
+            <a href="login.html" style="display:inline-block;padding:10px 16px;border-radius:8px;background:#3b82f6;color:#fff;text-decoration:none;font-weight:600;">Go to Login</a>
+          </div>
+        </div>
+      `;
+
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1200);
+
+      return false;
+    }
+
+    if (!enforceAdminAccess()) {
+      throw new Error('Unauthorized access blocked.');
+    }
+
+    function setStatus(message) {
+      const statusEl = document.getElementById('dataSourceStatus');
+      if (statusEl) {
+        statusEl.textContent = message;
+      }
+    }
+
+    function setScriptVersionStatus(status, text) {
+      const statusEl = document.getElementById('scriptVersionStatus');
+      if (!statusEl) {
+        return;
+      }
+
+      statusEl.className = `script-status ${status}`;
+      statusEl.textContent = text;
+      scriptVersionStatusCache = {
+        checkedAt: Date.now(),
+        status,
+        text
+      };
+    }
+
+    async function refreshScriptVersionStatus(force = false) {
+      if (!googleSheetApiUrl) {
+        setScriptVersionStatus('unknown', 'Script version: Not configured');
+        return;
+      }
+
+      const now = Date.now();
+      const isCacheFresh = (now - scriptVersionStatusCache.checkedAt) < SCRIPT_VERSION_STATUS_TTL_MS;
+      if (!force && isCacheFresh) {
+        const cache = scriptVersionStatusCache;
+        setScriptVersionStatus(cache.status, cache.text);
+        return;
+      }
+
+      setScriptVersionStatus('checking', 'Script version: Checking...');
+
+      const migrateUrl = googleSheetApiUrl.includes('?')
+        ? `${googleSheetApiUrl}&action=migratePasswords`
+        : `${googleSheetApiUrl}?action=migratePasswords`;
+
+      try {
+        const response = await fetch(migrateUrl, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Status ${response.status}`);
+        }
+
+        const payload = await response.json();
+        const messageText = String(payload.message || '').toLowerCase();
+        const hasUpdatedCount = Object.prototype.hasOwnProperty.call(payload, 'updated');
+
+        if (payload.status === 'success' && hasUpdatedCount && messageText.indexOf('password migration completed') !== -1) {
+          setScriptVersionStatus('new', 'Script version: Updated (supports migration)');
+          return;
+        }
+
+        if (payload.status === 'success') {
+          setScriptVersionStatus('old', 'Script version: Old deployment (redeploy required)');
+          return;
+        }
+
+        setScriptVersionStatus('unknown', 'Script version: Unknown response');
+      } catch (error) {
+        setScriptVersionStatus('unknown', 'Script version: Could not verify');
+      }
+    }
+
+    function formatFileSize(bytes) {
+      if (!bytes || bytes < 1024) return `${bytes || 0} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    }
+
+    function getUploadsApiUrl() {
+      if (!googleSheetApiUrl) {
+        return '';
+      }
+
+      return googleSheetApiUrl.includes('?')
+        ? `${googleSheetApiUrl}&action=getUploads`
+        : `${googleSheetApiUrl}?action=getUploads`;
+    }
+
+    async function loadUploadedFiles() {
+      if (!googleSheetApiUrl) {
+        allUploadedFiles = [];
+        renderUploadedFiles();
+        return;
+      }
+
+      try {
+        const response = await fetch(getUploadsApiUrl(), {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Uploads request failed with status ${response.status}`);
+        }
+
+        const payload = await response.json();
+        const uploads = Array.isArray(payload) ? payload : (Array.isArray(payload.data) ? payload.data : []);
+        allUploadedFiles = uploads;
+      } catch (error) {
+        console.error('Failed to fetch uploaded files:', error);
+        allUploadedFiles = [];
+      }
+
+      renderUploadedFiles();
+    }
+
+    function renderUploadedFiles() {
+      const files = allUploadedFiles;
+      const tbody = document.getElementById('uploadedFilesBody');
+      const countEl = document.getElementById('uploadedFilesCount');
+
+      if (countEl) {
+        countEl.textContent = `${files.length} file${files.length === 1 ? '' : 's'}`;
+      }
+
+      if (!tbody) {
+        return;
+      }
+
+      if (files.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              <div class="empty-state">
+                <div class="empty-state-icon">📁</div>
+                <h3>No uploaded files yet</h3>
+                <p>Files uploaded by students will appear here</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = files.map((file, index) => {
+        const uploadedDate = new Date(file.uploadedAt || Date.now());
+        const uploaderText = file.uploadedByEmail || file.uploadedByUsername || file.uploadedByName || 'Unknown user';
+
+        return `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${file.fileName || 'Untitled file'}</td>
+            <td>${file.fileType || '-'}</td>
+            <td>${formatFileSize(Number(file.fileSize || 0))}</td>
+            <td>${uploaderText}</td>
+            <td>${uploadedDate.toLocaleDateString()} ${uploadedDate.toLocaleTimeString()}</td>
+            <td>
+              <button class="btn btn-success" style="padding:6px 10px;font-size:12px;" onclick="downloadUploadedFile('${file.id}')">Download</button>
+              <button class="delete-btn" style="margin-left:6px;" onclick="deleteUploadedFile('${file.id}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function downloadUploadedFile(fileId) {
+      const files = allUploadedFiles;
+      const file = files.find((item) => item.id === fileId);
+      if (!file) {
+        alert('File is missing or corrupted.');
+        return;
+      }
+
+      const href = file.downloadUrl || file.viewUrl;
+      if (!href) {
+        alert('Download link is missing for this file.');
+        return;
+      }
+
+      const a = document.createElement('a');
+      a.href = href;
+      a.download = file.fileName || 'download';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    async function deleteUploadedFile(fileId) {
+      if (!confirm('Delete this uploaded file from admin inbox?')) {
+        return;
+      }
+
+      if (!googleSheetApiUrl) {
+        alert('Google Script URL is not configured.');
+        return;
+      }
+
+      try {
+        const formBody = new URLSearchParams();
+        formBody.append('action', 'deleteUpload');
+        formBody.append('id', fileId);
+
+        const response = await fetch(googleSheetApiUrl, {
+          method: 'POST',
+          body: formBody
+        });
+
+        if (!response.ok) {
+          throw new Error(`Delete failed with status ${response.status}`);
+        }
+
+        const payload = await response.json();
+        if (payload.status !== 'success') {
+          throw new Error(payload.message || 'Delete failed');
+        }
+
+        await loadUploadedFiles();
+      } catch (error) {
+        console.error('Delete upload failed:', error);
+        alert(`Delete failed: ${error.message || 'Please try again.'}`);
+      }
+    }
+
+    function normalizeSheetUser(user, index) {
+      const firstName = user.firstName || user.firstname || user.name || '';
+      const lastName = user.lastName || user.lastname || '';
+      const email = (user.email || '').toLowerCase();
+
+      return {
+        id: user.id || `sheet-${index}-${email || Date.now()}`,
+        firstName,
+        lastName,
+        email,
+        department: user.department || user.branch || '-',
+        semester: String(user.semester || user.sem || '-'),
+        collegeIdNo: user.collegeIdNo || user.collegeId || user.college_id || '-',
+        college: user.college || '-',
+        createdAt: user.createdAt || user.created_at || new Date().toISOString(),
+        username: user.username || ''
+      };
+    }
+
+    async function fetchUsersFromGoogleSheet() {
+      if (!googleSheetApiUrl) {
+        return [];
+      }
+
+      const url = googleSheetApiUrl.includes('?')
+        ? `${googleSheetApiUrl}&action=getUsers`
+        : `${googleSheetApiUrl}?action=getUsers`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Sheet request failed with status ${response.status}`);
+      }
+
+      const payload = await response.json();
+      const rawUsers = Array.isArray(payload) ? payload : (Array.isArray(payload.data) ? payload.data : []);
+      return rawUsers.map((user, index) => normalizeSheetUser(user, index));
+    }
+
+    function mergeUsers(localUsers, sheetUsers) {
+      const mergedMap = new Map();
+
+      localUsers.forEach((user) => {
+        const key = (user.email || user.id || '').toLowerCase();
+        if (key) {
+          mergedMap.set(key, user);
+        }
+      });
+
+      sheetUsers.forEach((user) => {
+        const key = (user.email || user.id || '').toLowerCase();
+        if (!key) {
+          return;
+        }
+
+        const existing = mergedMap.get(key) || {};
+        mergedMap.set(key, {
+          ...existing,
+          ...user
+        });
+      });
+
+      return Array.from(mergedMap.values());
+    }
+
+    async function loadUsers() {
+      await refreshScriptVersionStatus();
+
+      const localUsers = JSON.parse(localStorage.getItem('users')) || [];
+      let sheetUsers = [];
+
+      if (googleSheetApiUrl) {
+        try {
+          sheetUsers = await fetchUsersFromGoogleSheet();
+          setStatus(`Source: Local + Google Sheet (${sheetUsers.length} from sheet)`);
+        } catch (error) {
+          console.error('Google Sheet sync error:', error);
+          setStatus('Source: Local Storage (Sheet sync failed)');
+        }
+      } else {
+        setStatus('Source: Local Storage');
+      }
+
+      allUsers = mergeUsers(localUsers, sheetUsers);
+      updateStats();
+      displayUsers(allUsers);
+      await loadUploadedFiles();
+    }
+
+    async function setGoogleSheetLink() {
+      const current = googleSheetApiUrl || '';
+      const nextUrl = prompt(
+        'Paste your Google Apps Script Web App URL (must return JSON for action=getUsers):',
+        current
+      );
+
+      if (nextUrl === null) {
+        return;
+      }
+
+      const cleanUrl = nextUrl.trim();
+      if (!cleanUrl) {
+        localStorage.removeItem(GOOGLE_SHEET_CONFIG_KEY);
+        googleSheetApiUrl = '';
+        alert('Google Sheet link removed.');
+        await refreshScriptVersionStatus(true);
+        loadUsers();
+        return;
+      }
+
+      localStorage.setItem(GOOGLE_SHEET_CONFIG_KEY, cleanUrl);
+      googleSheetApiUrl = cleanUrl;
+      await refreshScriptVersionStatus(true);
+      alert('Google Sheet link saved. Click Sync Sheet to fetch data.');
+    }
+
+    async function syncGoogleSheetNow() {
+      if (!googleSheetApiUrl) {
+        alert('Please connect your Google Sheet first.');
+        return;
+      }
+
+      await refreshScriptVersionStatus(true);
+      await loadUsers();
+      alert('Google Sheet sync completed.');
+    }
+
+    async function migrateSheetPasswordsNow() {
+      if (!googleSheetApiUrl) {
+        alert('Please connect your Google Sheet first.');
+        return;
+      }
+
+      const migrateUrl = googleSheetApiUrl.includes('?')
+        ? `${googleSheetApiUrl}&action=migratePasswords`
+        : `${googleSheetApiUrl}?action=migratePasswords`;
+
+      try {
+        const response = await fetch(migrateUrl, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`Migration request failed with status ${response.status}`);
+        }
+
+        const payload = await response.json();
+        if (payload.status !== 'success') {
+          throw new Error(payload.message || 'Migration failed.');
+        }
+
+        const messageText = String(payload.message || '').toLowerCase();
+        const hasUpdatedCount = Object.prototype.hasOwnProperty.call(payload, 'updated');
+        if (!hasUpdatedCount || messageText.indexOf('password migration completed') === -1) {
+          throw new Error('Your Apps Script deployment is outdated. Please redeploy the latest script version, then try migration again.');
+        }
+
+        const updated = Number(payload.updated || 0);
+        await refreshScriptVersionStatus(true);
+        await loadUsers();
+        alert(`Password migration completed. Updated rows: ${updated}`);
+      } catch (error) {
+        console.error('Password migration failed:', error);
+        await refreshScriptVersionStatus(true);
+        alert(`Migration failed: ${error.message || 'Please redeploy Apps Script and try again.'}`);
+      }
+    }
+
+    // Update statistics
+    function updateStats() {
+      document.getElementById('totalUsers').textContent = allUsers.length;
+      
+      const today = new Date().toDateString();
+      const todayCount = allUsers.filter(user => {
+        return new Date(user.createdAt).toDateString() === today;
+      }).length;
+      document.getElementById('todayUsers').textContent = todayCount;
+    }
+
+    // Display users in table
+    function displayUsers(users) {
+      const tbody = document.getElementById('tableBody');
+      
+      if (users.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9">
+              <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <h3>No users found</h3>
+                <p>Users who sign up will appear here</p>
+              </div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = users.map((user, index) => {
+        const date = new Date(user.createdAt);
+        const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+        
+        return `
+          <tr>
+            <td>${index + 1}</td>
+            <td><strong>${user.firstName} ${user.lastName}</strong></td>
+            <td>${user.email}</td>
+            <td><span class="badge badge-${user.department.toLowerCase()}">${user.department}</span></td>
+            <td>${user.semester}</td>
+            <td>${user.collegeIdNo || '-'}</td>
+            <td>${user.college}</td>
+            <td>${formattedDate}</td>
+            <td>
+              <button class="delete-btn" onclick="deleteUser('${user.id}')">Delete</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Apply filters
+    function applyFilters() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const deptFilter = document.getElementById('departmentFilter').value;
+      const semFilter = document.getElementById('semesterFilter').value;
+
+      let filtered = allUsers;
+
+      if (searchTerm) {
+        filtered = filtered.filter(user => 
+          user.firstName.toLowerCase().includes(searchTerm) ||
+          user.lastName.toLowerCase().includes(searchTerm) ||
+          user.email.toLowerCase().includes(searchTerm) ||
+          String(user.collegeIdNo || '').toLowerCase().includes(searchTerm)
+        );
+      }
+
+      if (deptFilter) {
+        filtered = filtered.filter(user => user.department === deptFilter);
+      }
+
+      if (semFilter) {
+        filtered = filtered.filter(user => user.semester === semFilter);
+      }
+
+      displayUsers(filtered);
+    }
+
+    // Export to CSV
+    function exportToCSV() {
+      if (allUsers.length === 0) {
+        alert('No data to export!');
+        return;
+      }
+
+      const headers = ['ID', 'First Name', 'Last Name', 'Email', 'Department', 'Semester', 'College ID No', 'College', 'Created At'];
+      const csvRows = [headers.join(',')];
+
+      allUsers.forEach(user => {
+        const row = [
+          user.id,
+          user.firstName,
+          user.lastName,
+          user.email,
+          user.department,
+          user.semester,
+          user.collegeIdNo || '',
+          `"${user.college}"`,
+          user.createdAt
+        ];
+        csvRows.push(row.join(','));
+      });
+
+      const csvContent = csvRows.join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'codex_users_' + new Date().toISOString().split('T')[0] + '.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+
+    // Export to Excel format (actually CSV but named .xlsx for Excel opening)
+    function exportToExcel() {
+      if (allUsers.length === 0) {
+        alert('No data to export!');
+        return;
+      }
+
+      // Create more detailed Excel-friendly format
+      const headers = ['ID', 'First Name', 'Last Name', 'Email', 'Department', 'Semester', 'College ID No', 'College', 'Created Date', 'Created Time'];
+      const csvRows = [headers.join('\t')]; // Tab-separated for Excel
+
+      allUsers.forEach(user => {
+        const date = new Date(user.createdAt);
+        const row = [
+          user.id,
+          user.firstName,
+          user.lastName,
+          user.email,
+          user.department,
+          user.semester,
+          user.collegeIdNo || '',
+          user.college,
+          date.toLocaleDateString(),
+          date.toLocaleTimeString()
+        ];
+        csvRows.push(row.join('\t'));
+      });
+
+      const csvContent = csvRows.join('\n');
+      const blob = new Blob([csvContent], { type: 'application/vnd.ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'codex_users_' + new Date().toISOString().split('T')[0] + '.xls';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+
+    // Delete single user
+    function deleteUser(userId) {
+      if (!confirm('Are you sure you want to delete this user?')) {
+        return;
+      }
+
+      allUsers = allUsers.filter(user => user.id !== userId);
+      localStorage.setItem('users', JSON.stringify(allUsers));
+      loadUsers();
+    }
+
+    // Clear all data
+    function clearAllData() {
+      if (!confirm('⚠️ WARNING: This will delete ALL user data permanently! Are you sure?')) {
+        return;
+      }
+
+      if (!confirm('This action cannot be undone. Continue?')) {
+        return;
+      }
+
+      localStorage.removeItem('users');
+      allUsers = [];
+      loadUsers();
+      alert('All local data has been cleared. Sheet data will reappear after sync if connected.');
+    }
+
+    // Add event listeners
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('departmentFilter').addEventListener('change', applyFilters);
+    document.getElementById('semesterFilter').addEventListener('change', applyFilters);
+
+    // Initial load
+    loadUsers();
+
+    // Auto-refresh every 5 seconds
+    setInterval(loadUsers, 5000);
+
+    // ========== AUTO DEVICE DETECTION & RESPONSIVE SYSTEM ==========
+    class DeviceDetector {
+      constructor() {
+        this.deviceType = 'desktop';
+        this.os = 'unknown';
+        this.isMobile = false;
+        this.isTablet = false;
+        this.isDesktop = false;
+        this.isPortrait = true;
+        this.screenWidth = window.innerWidth;
+        this.screenHeight = window.innerHeight;
+        
+        this.init();
+      }
+
+      init() {
+        this.detectDevice();
+        this.detectOS();
+        this.detectOrientation();
+        this.applyDeviceClasses();
+        this.setupEventListeners();
+      }
+
+      detectDevice() {
+        const ua = navigator.userAgent.toLowerCase();
+        const screenWidth = window.innerWidth;
+        const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(ua);
+        const isTabletUA = /ipad|android(?!.*mobile)|xoom|kindle|playbook/i.test(ua);
+
+        if (screenWidth <= 480) {
+          this.deviceType = 'phone';
+          this.isMobile = true;
+        } else if (screenWidth <= 1024) {
+          this.deviceType = 'tablet';
+          this.isTablet = true;
+          this.isMobile = true;
+        } else {
+          this.deviceType = 'desktop';
+          this.isDesktop = true;
+        }
+
+        if (isMobileUA && !isTabletUA && screenWidth <= 768) {
+          this.deviceType = 'phone';
+          this.isMobile = true;
+          this.isTablet = false;
+        } else if (isTabletUA) {
+          this.deviceType = 'tablet';
+          this.isTablet = true;
+          this.isMobile = true;
+        }
+      }
+
+      detectOS() {
+        const ua = navigator.userAgent.toLowerCase();
+
+        if (ua.indexOf('win') > -1) {
+          this.os = 'Windows';
+        } else if (ua.indexOf('mac') > -1 && ua.indexOf('iphone') === -1 && ua.indexOf('ipad') === -1) {
+          this.os = 'Mac';
+        } else if (ua.indexOf('iphone') > -1 || ua.indexOf('ipad') > -1 || ua.indexOf('ipod') > -1) {
+          this.os = 'iOS';
+          this.deviceType = this.deviceType === 'desktop' ? 'tablet' : this.deviceType;
+          if (ua.indexOf('iphone') > -1 || ua.indexOf('ipod') > -1) {
+            this.deviceType = 'phone';
+          }
+        } else if (ua.indexOf('android') > -1) {
+          this.os = 'Android';
+          this.deviceType = this.deviceType === 'desktop' ? 'phone' : this.deviceType;
+        } else if (ua.indexOf('linux') > -1 && ua.indexOf('x11') > -1) {
+          this.os = 'Linux';
+        }
+      }
+
+      detectOrientation() {
+        this.isPortrait = window.innerHeight >= window.innerWidth;
+      }
+
+      applyDeviceClasses() {
+        const html = document.documentElement;
+        
+        html.classList.remove('device-phone', 'device-tablet', 'device-desktop');
+        html.classList.remove('os-ios', 'os-android', 'os-windows', 'os-mac', 'os-linux');
+        html.classList.remove('orientation-portrait', 'orientation-landscape');
+        html.classList.remove('touch-enabled', 'touch-disabled');
+
+        html.classList.add(`device-${this.deviceType}`);
+
+        if (this.os !== 'unknown') {
+          html.classList.add(`os-${this.os.toLowerCase()}`);
+        }
+
+        html.classList.add(this.isPortrait ? 'orientation-portrait' : 'orientation-landscape');
+
+        const isTouchDevice = () => {
+          return (('ontouchstart' in window) ||
+                  (navigator.maxTouchPoints > 0) ||
+                  (navigator.msMaxTouchPoints > 0));
+        };
+
+        if (isTouchDevice()) {
+          html.classList.add('touch-enabled');
+        } else {
+          html.classList.add('touch-disabled');
+        }
+
+        if (this.isMobile) {
+          document.body.style.overscrollBehaviorY = 'auto';
+          document.body.style.webkitOverflowScrolling = 'touch';
+        }
+      }
+
+      setupEventListeners() {
+        window.addEventListener('orientationchange', () => {
+          setTimeout(() => {
+            this.detectOrientation();
+            this.applyDeviceClasses();
+          }, 100);
+        });
+
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            this.screenWidth = window.innerWidth;
+            this.screenHeight = window.innerHeight;
+            this.detectDevice();
+            this.detectOrientation();
+            this.applyDeviceClasses();
+          }, 250);
+        });
+
+        // Keep native iOS gestures enabled to avoid blocking scroll.
+      }
+    }
+
+    const deviceDetector = new DeviceDetector();
+
+    const style = document.createElement('style');
+    style.textContent = `
+      html.device-phone {
+        --touch-target: 44px;
+      }
+
+      html.device-phone button,
+      html.device-phone a {
+        min-height: var(--touch-target);
+        min-width: var(--touch-target);
+        padding: 12px 16px !important;
+      }
+
+      html.device-phone.os-ios input,
+      html.device-phone.os-ios button,
+      html.device-phone.os-ios a {
+        font-size: 16px;
+      }
+
+      html.device-tablet .nav-actions {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      html.orientation-landscape.device-phone {
+        --header-height: 50px;
+      }
+
+      html.touch-enabled {
+        --transition-duration: 0.15s;
+      }
+
+      html.touch-enabled button,
+      html.touch-enabled a {
+        transition: background-color 0.15s ease, transform 0.15s ease;
+      }
+
+      html.os-ios {
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+      }
+
+      html.os-ios:not(.device-desktop) body {
+        -webkit-font-smoothing: antialiased;
+        -webkit-backface-visibility: hidden;
+      }
+
+      html.os-android {
+        scroll-behavior: smooth;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      html {
+        overflow-y: scroll;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

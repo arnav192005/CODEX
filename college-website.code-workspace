@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "../../../../Desktop/college-website"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../her-birthday-main"
+		},
+		{
+			"path": "../AM"
+		},
+		{
+			"path": "../SERVICE_WEBSITE"
+		},
+		{
+			"path": "../UNIVERSE"
+		}
+	],
+	"settings": {
+		"powershell.cwd": "SERVICE_WEBSITE",
+		"liveServer.settings.multiRootWorkspaceName": "ARNAV-CLG PROJECT"
+	}
+}
